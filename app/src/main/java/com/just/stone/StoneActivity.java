@@ -1,9 +1,9 @@
 package com.just.stone;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 
-public class StoneActivity extends AppCompatActivity {
+public class StoneActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
