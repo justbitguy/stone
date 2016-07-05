@@ -80,17 +80,15 @@ public class StoneActivity extends Activity {
         titleList.add("view1");
         titleList.add("view2");
         titleList.add("view3");
+        findViewById(R.id.layout_bottom_tool_first).setSelected(true);
+        findViewById(R.id.layout_bottom_tool_first_image).setSelected(true);
+        findViewById(R.id.layout_bottom_tool_first_text).setSelected(true);
         mPagerAdapter.notifyDataSetChanged();
         bindAction();
     }
 
     private void bindAction(){
-        LinearLayout layout1 = (LinearLayout)findViewById(R.id.first_index_layout);
-        layout1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+
     }
 
 
