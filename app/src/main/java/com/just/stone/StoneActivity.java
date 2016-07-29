@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 
 import com.just.stone.service.StoneAccessibilityService;
 import com.just.stone.util.AppManagerUtil;
+import com.just.stone.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class StoneActivity extends Activity {
         init();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(StoneAccessibilityService.getCallBackAction(this));
-        this.registerReceiver(mBroadCastReceiver, intentFilter, "com.quick.gamebooster.PowerBoost", null);
+        this.registerReceiver(mBroadCastReceiver, intentFilter);
     }
 
     private void init(){
@@ -108,8 +109,11 @@ public class StoneActivity extends Activity {
     private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() == StoneAccessibilityService.getCallBackAction(context)){
-                AppManagerUtil.forceStopApp(StoneActivity.this, "com.tencent.mm", false);
+            if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
+                LogUtil.d("access", "receive broadcast");
+                if (intent.getIntExtra("result", 1) == 1) {
+                    AppManagerUtil.forceStopApp(StoneActivity.this, "com.tencent.mm", false);
+                }
             }
         }
     };
