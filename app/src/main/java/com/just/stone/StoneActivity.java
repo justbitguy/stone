@@ -1,8 +1,12 @@
 package com.just.stone;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -13,6 +17,9 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+
+import com.just.stone.service.StoneAccessibilityService;
+import com.just.stone.util.AppManagerUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +35,9 @@ public class StoneActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stone);
         init();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(StoneAccessibilityService.getCallBackAction(this));
+        this.registerReceiver(mBroadCastReceiver, intentFilter, "com.quick.gamebooster.PowerBoost", null);
     }
 
     private void init(){
@@ -49,7 +59,6 @@ public class StoneActivity extends Activity {
             public void destroyItem(ViewGroup container, int position,
                                     Object object) {
                 container.removeView(viewList.get(position));
-
             }
 
             @Override
@@ -88,8 +97,20 @@ public class StoneActivity extends Activity {
     }
 
     private void bindAction(){
-
+        findViewById(R.id.layout_top_tool_third).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppManagerUtil.forceStopApp(StoneActivity.this, "com.quick.powermanager", false);
+            }
+        });
     }
 
-
+    private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() == StoneAccessibilityService.getCallBackAction(context)){
+                AppManagerUtil.forceStopApp(StoneActivity.this, "com.tencent.mm", false);
+            }
+        }
+    };
 }
