@@ -43,6 +43,12 @@ public class StoneActivity extends Activity {
         this.registerReceiver(mBroadCastReceiver, intentFilter);
     }
 
+    @Override
+    protected void onDestroy() {
+        this.unregisterReceiver(mBroadCastReceiver);
+        super.onDestroy();
+    }
+
     private void init(){
         mViewPager = (ViewPager)findViewById(R.id.stone_view_pager);
         PagerAdapter mPagerAdapter = new PagerAdapter() {
@@ -134,6 +140,7 @@ public class StoneActivity extends Activity {
             if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
                 LogUtil.d("access", "receive broadcast");
                 if (intent.getIntExtra("result", 1) == 1) {
+                    SystemClock.sleep(2000);
                     mPage2.continueKill();
                 }
             }

@@ -50,7 +50,10 @@ public class Page2 extends Page{
         List<String> pkgNameList = new ArrayList<>();
         pkgNameList.addAll(appList);
         for (String pkgName : pkgNameList){
-            if (AppManagerUtil.isPackageStopped(pkgName) || WhiteListConstant.systemList().contains(pkgName)){
+            if (AppManagerUtil.isPackageStopped(pkgName)
+                    || WhiteListConstant.systemList().contains(pkgName)
+                    || AppManagerUtil.isSystemApp(pkgName)
+                    || pkgName.equals("com.just.stone")){
                 continue;
             }
             AppInfo info = new AppInfo();
@@ -126,18 +129,17 @@ public class Page2 extends Page{
         if (mListToKill.size() == 0){
             return;
         }
-        AppInfo info = mListToKill.get(0);
+        AppInfo info = mListToKill.remove(0);
         if (AppManagerUtil.isPackageStopped(info.packageName)){
-            mListToKill.remove(0);
             return;
         }
 
         if (info.packageName.equals("com.just.stone")){
             return;
         }
+
         AppManagerUtil.forceStopApp(mContext, info.packageName, false);
         LogUtil.d("force-stop", info.packageName);
-        mListToKill.remove(0);
     }
 
 //    private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {

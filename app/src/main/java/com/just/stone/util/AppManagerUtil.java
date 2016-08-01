@@ -125,4 +125,34 @@ public class AppManagerUtil {
             return isStopped;
         }
     }
+
+    public static boolean isSystemApp(String pkgName) {
+        boolean isSys = false;
+        if (TextUtils.isEmpty(pkgName)) {
+            return isSys;
+        }
+
+        if (pkgName.contains(":")) {
+            pkgName = pkgName.split(":")[0];
+        }
+
+        PackageManager pm;
+        try {
+            pm = ApplicationEx.getInstance().getPackageManager();
+            ApplicationInfo info = pm.getApplicationInfo(pkgName, PackageManager.GET_UNINSTALLED_PACKAGES);
+            if (info != null) {
+                if ((info.flags & ApplicationInfo.FLAG_SYSTEM) > 0) {
+                    isSys = true;
+                }
+            }else {
+                //// FIXME: 2016/5/16 is right for this? by luowp
+                return true;
+            }
+
+        } catch (Exception e) {
+            LogUtil.d("liontools", "isSystemApp exception: " + e.getMessage());
+            return true;
+        }
+        return isSys;
+    }
 }
