@@ -31,7 +31,7 @@ public class StoneActivity extends Activity {
     List<View> viewList = new ArrayList<View>();
     List<String> titleList = new ArrayList<>();
     ViewPager mViewPager;
-    Page mPage2;
+    Page2 mPage2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class StoneActivity extends Activity {
             if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
                 LogUtil.d("access", "receive broadcast");
                 if (intent.getIntExtra("result", 1) == 1) {
-                    AppManagerUtil.forceStopApp(StoneActivity.this, "com.tencent.mm", false);
+                    mPage2.continueKill();
                 }
             }
         }

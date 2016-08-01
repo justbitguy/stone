@@ -109,4 +109,20 @@ public class AppManagerUtil {
             return dIcon;
         }
     }
+
+    public static boolean isPackageStopped(String packageName) {
+        PackageManager pm;
+        boolean isStopped = true;
+        try {
+            pm = ApplicationEx.getInstance().getPackageManager();
+            ApplicationInfo info = pm.getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
+            if (info != null) {
+                isStopped = (info.flags & ApplicationInfo.FLAG_STOPPED) > 0;
+            }
+        } catch (Exception e) {
+            LogUtil.error(e);
+        } finally {
+            return isStopped;
+        }
+    }
 }

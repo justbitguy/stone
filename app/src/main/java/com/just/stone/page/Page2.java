@@ -1,7 +1,10 @@
 package com.just.stone.page;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +15,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.just.stone.R;
+import com.just.stone.StoneActivity;
+import com.just.stone.constant.WhiteListConstant;
 import com.just.stone.manager.InstalledPackageManager;
 import com.just.stone.model.AppInfo;
+import com.just.stone.service.StoneAccessibilityService;
 import com.just.stone.util.AppManagerUtil;
+import com.just.stone.util.LogUtil;
 import com.just.stone.view.ViewHolder;
 
 import java.util.ArrayList;
@@ -27,8 +34,9 @@ import java.util.Set;
 public class Page2 extends Page{
 
     ListView mListView;
-    List<AppInfo> mAppList;
+    ArrayList<AppInfo> mAppList;
     ViewAdapter mAdapter;
+    List<AppInfo> mListToKill;
 
     public Page2(Activity context, int mViewId){
         super(context, mViewId);
@@ -42,6 +50,9 @@ public class Page2 extends Page{
         List<String> pkgNameList = new ArrayList<>();
         pkgNameList.addAll(appList);
         for (String pkgName : pkgNameList){
+            if (AppManagerUtil.isPackageStopped(pkgName) || WhiteListConstant.systemList().contains(pkgName)){
+                continue;
+            }
             AppInfo info = new AppInfo();
             info.packageName = pkgName;
             info.name = AppManagerUtil.getNameByPackage(pkgName);
@@ -58,6 +69,21 @@ public class Page2 extends Page{
         if (mAppList.size() != 0) {
             mAdapter.notifyDataSetChanged();
         }
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(StoneAccessibilityService.getCallBackAction(mContext));
+//        mContext.registerReceiver(mBroadCastReceiver, intentFilter);
+
+        TextView stopTv = (TextView)mView.findViewById(R.id.button_force_stop);
+        stopTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListToKill = (List)mAppList.clone();
+                AppInfo info = mListToKill.get(0);
+                AppManagerUtil.forceStopApp(mContext, info.packageName, false);
+                mListToKill.remove(0);
+            }
+        });
     }
 
     @Override
@@ -95,4 +121,33 @@ public class Page2 extends Page{
             return convertView;
         }
     }
+
+    public void continueKill(){
+        if (mListToKill.size() == 0){
+            return;
+        }
+        AppInfo info = mListToKill.get(0);
+        if (AppManagerUtil.isPackageStopped(info.packageName)){
+            mListToKill.remove(0);
+            return;
+        }
+
+        if (info.packageName.equals("com.just.stone")){
+            return;
+        }
+        AppManagerUtil.forceStopApp(mContext, info.packageName, false);
+        LogUtil.d("force-stop", info.packageName);
+        mListToKill.remove(0);
+    }
+
+//    private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
+//                LogUtil.d("access", "receive broadcast");
+//                if (intent.getIntExtra("result", 1) == 1) {
+//                }
+//            }
+//        }
+//    };
 }
