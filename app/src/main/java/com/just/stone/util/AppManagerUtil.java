@@ -3,9 +3,16 @@ package com.just.stone.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.text.TextUtils;
+
+import com.just.stone.ApplicationEx;
+import com.just.stone.R;
 
 /**
  * Created by Zac on 2016/7/28.
@@ -55,4 +62,51 @@ public class AppManagerUtil {
         }
     }
 
+    public static String getNameByPackage(String packageName) {
+        return getNameByPackage(packageName, true);
+    }
+
+    public static String getNameByPackage(String packageName, boolean useDefault) {
+        PackageManager pm;
+        String name = null;
+        if (TextUtils.isEmpty(packageName)) {
+            return null;
+        }
+
+        ApplicationInfo info;
+        try {
+            pm = ApplicationEx.getInstance().getPackageManager();
+            info = pm.getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
+            if (info != null) {
+                name = info.loadLabel(pm).toString();
+            }
+        } catch (Exception e) {
+            if (useDefault) {
+                name = ResourceUtil.getString(R.string.uninstalled_app);
+            }
+        } finally {
+            return name;
+        }
+    }
+
+    public static Drawable getPackageIcon(String packageName) {
+        return getPackageIcon(packageName, true);
+    }
+
+    public static Drawable getPackageIcon(String packageName, boolean useDefault) {
+        PackageManager pm;
+        Drawable dIcon = null;
+        try {
+            pm = ApplicationEx.getInstance().getPackageManager();
+            ApplicationInfo info = pm.getApplicationInfo(packageName, 0);
+            dIcon = info.loadIcon(pm);
+            if (dIcon == null) throw new Exception();
+            return dIcon;
+        } catch (Exception e) {
+            if (useDefault) {
+                dIcon = ResourceUtil.getDefaultIcon();
+            }
+            return dIcon;
+        }
+    }
 }

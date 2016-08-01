@@ -18,6 +18,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
+import com.just.stone.page.Page;
+import com.just.stone.page.Page2;
 import com.just.stone.service.StoneAccessibilityService;
 import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
@@ -29,7 +31,7 @@ public class StoneActivity extends Activity {
     List<View> viewList = new ArrayList<View>();
     List<String> titleList = new ArrayList<>();
     ViewPager mViewPager;
-
+    Page mPage2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +83,31 @@ public class StoneActivity extends Activity {
             }
         };
         mViewPager.setAdapter(mPagerAdapter);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 1){
+                    mPage2.onPageSelected();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         View view1 = getLayoutInflater().inflate(R.layout.layout_view1, null);
-        View view2 = getLayoutInflater().inflate(R.layout.layout_view2, null);
+//        View view2 = getLayoutInflater().inflate(R.layout.layout_view2, null);
+         mPage2 = new Page2(this, R.layout.layout_view2);
         View view3 = getLayoutInflater().inflate(R.layout.layout_view3, null);
         viewList.add(view1);
-        viewList.add(view2);
+        viewList.add(mPage2.getView());
         viewList.add(view3);
         titleList.add("view1");
         titleList.add("view2");

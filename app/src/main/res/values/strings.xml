@@ -6,4 +6,6 @@
     <string name="accessibility_service_label">Stone</string>
     <string name="accessibility_service_description">turn on accessibility service to enable powerful service</string>
     <string name="ok_string">OK</string>
+    <string name="null_string" translatable="false" />
+    <string name="uninstalled_app">Uninstalled App</string>
 </resources>
