@@ -10,7 +10,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.SystemClock;
 
+import com.just.stone.manager.ForceStopManager;
 import com.just.stone.model.eventbus.OnNotifyService;
+import com.just.stone.model.eventbus.OnStartForceStop;
 import com.just.stone.util.LogUtil;
 
 import de.greenrobot.event.EventBus;
@@ -35,11 +37,6 @@ public class LocalService extends Service {
 
     @Override
     public void onCreate() {
-
-//        IntentFilter intentFilter = new IntentFilter();
-//        intentFilter.addAction(StoneAccessibilityService.getCallBackAction(this));
-//        this.registerReceiver(mBroadCastReceiver, intentFilter);
-
         // The service is being created
         EventBus.getDefault().register(this);
     }
@@ -66,17 +63,7 @@ public class LocalService extends Service {
         LogUtil.d("service", "receive event: OnNotifyService");
     }
 
-//    private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
-//                LogUtil.d("access", "receive broadcast");
-//                if (intent.getIntExtra("result", 1) == 1) {
-//                    SystemClock.sleep(2000);
-////                    mPage2.continueKill();
-//                    // TODO: 2016/8/2
-//                }
-//            }
-//        }
-//    };
+    public void onEventAsync(OnStartForceStop event){
+        ForceStopManager.getInstance(this).start(event.appList);
+    }
 }

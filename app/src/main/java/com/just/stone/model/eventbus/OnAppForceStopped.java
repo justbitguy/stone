@@ -5,6 +5,6 @@ import com.just.stone.model.pojo.StopAppInfo;
 /**
  * Created by Zac on 2016/8/2.
  */
-public class OnAppForceStop {
+public class OnAppForceStopped {
     public String packageName;
 }

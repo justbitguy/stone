@@ -1,7 +1,11 @@
 package com.just.stone.page;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -11,11 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.just.stone.BuildConfig;
 import com.just.stone.R;
 import com.just.stone.constant.WhiteListConstant;
 import com.just.stone.manager.InstalledPackageManager;
-import com.just.stone.model.eventbus.OnForceStopApps;
-import com.just.stone.model.eventbus.OnNotifyService;
+import com.just.stone.model.eventbus.OnAppForceStopped;
+import com.just.stone.model.eventbus.OnStartForceStop;
 import com.just.stone.model.pojo.StopAppInfo;
 import com.just.stone.service.StoneAccessibilityService;
 import com.just.stone.util.AppManagerUtil;
@@ -23,6 +28,7 @@ import com.just.stone.util.LogUtil;
 import com.just.stone.view.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,9 +40,8 @@ import de.greenrobot.event.EventBus;
 public class Page2 extends Page{
 
     ListView mListView;
-    ArrayList<StopAppInfo> mAppList;
+    List<StopAppInfo> mAppList;
     ViewAdapter mAdapter;
-    ArrayList<StopAppInfo> mListToKill;
 
     public Page2(Activity context, int mViewId){
         super(context, mViewId);
@@ -46,14 +51,12 @@ public class Page2 extends Page{
     protected void initData(){
         super.initData();
         mAppList = new ArrayList<>();
-        Set<String> appList = InstalledPackageManager.getInstance().getPkgNameOfInstalledApp();
-        List<String> pkgNameList = new ArrayList<>();
-        pkgNameList.addAll(appList);
-        for (String pkgName : pkgNameList){
+        Set<String> installedApps = InstalledPackageManager.getInstance().getPkgNameOfInstalledApp();
+        for (String pkgName : installedApps){
             if (AppManagerUtil.isPackageStopped(pkgName)
                     || WhiteListConstant.systemList().contains(pkgName)
                     || AppManagerUtil.isSystemApp(pkgName)
-                    || pkgName.equals("com.just.stone")){
+                    || pkgName.equals(mContext.getPackageName())){
                 continue;
             }
             StopAppInfo info = new StopAppInfo();
@@ -61,6 +64,10 @@ public class Page2 extends Page{
             info.name = AppManagerUtil.getNameByPackage(pkgName);
             mAppList.add(info);
         }
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(StoneAccessibilityService.getCallBackAction(mContext));
+        mContext.registerReceiver(mBroadCastReceiver, intentFilter);
     }
 
     @Override
@@ -133,10 +140,34 @@ public class Page2 extends Page{
     }
 
     private void startForceStop(){
-        EventBus.getDefault().post(new OnForceStopApps((List)mListToKill.clone()));
+        List<StopAppInfo> list = new ArrayList<>();
+        for (StopAppInfo info : mAppList){
+            if (info.isChecked){
+                list.add(info);
+            }
+        }
+        forceStop();
     }
 
-    public void onEventMainThread(){
-
+    private void forceStop(){
+        if (mAppList.size() == 0){
+            mContext.finishActivity(AppManagerUtil.REQUEST_CODE_FORCE_STOP);
+            return;
+        }
+        StopAppInfo info = mAppList.remove(0);
+        AppManagerUtil.forceStopApp(mContext, info.packageName, false);
     }
+
+    private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
+                LogUtil.d("access", "receive broadcast");
+                if (intent.getIntExtra("result", 1) == 1) {
+                    SystemClock.sleep(1000);
+                    forceStop();
+                }
+            }
+        }
+    };
 }

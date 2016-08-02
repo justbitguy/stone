@@ -1,4 +1,4 @@
-package com.just.stone;
+package com.just.stone.activity;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -18,6 +18,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
+import com.just.stone.R;
 import com.just.stone.model.eventbus.OnNotifyService;
 import com.just.stone.page.Page;
 import com.just.stone.page.Page2;
@@ -48,7 +49,7 @@ public class StoneActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        this.unregisterReceiver(mBroadCastReceiver);
+//        this.unregisterReceiver(mBroadCastReceiver);
         super.onDestroy();
     }
 
@@ -132,22 +133,19 @@ public class StoneActivity extends Activity {
         findViewById(R.id.layout_top_tool_third).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AppManagerUtil.forceStopApp(StoneActivity.this, "com.quick.powermanager", false);
                 EventBus.getDefault().post(new OnNotifyService());
             }
         });
     }
 
-    private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
-                LogUtil.d("access", "receive broadcast");
-                if (intent.getIntExtra("result", 1) == 1) {
-//                    SystemClock.sleep(2000);
-//                    mPage2.continueKill();
-                }
-            }
-        }
-    };
+//    private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
+//                LogUtil.d("access", "receive broadcast");
+//                if (intent.getIntExtra("result", 1) == 1) {
+//                }
+//            }
+//        }
+//    };
 }

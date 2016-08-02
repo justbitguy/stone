@@ -7,9 +7,9 @@ import java.util.List;
 /**
  * Created by Zac on 2016/8/2.
  */
-public class OnForceStopApps {
+public class OnStartForceStop {
     public List<StopAppInfo> appList;
-    public OnForceStopApps(List<StopAppInfo> list){
+    public OnStartForceStop(List<StopAppInfo> list){
         this.appList = list;
     }
 }

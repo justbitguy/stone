@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class WhiteListConstant {
 
-    private static String[] SYSTEM_LIST= new String []{
+    private static final String[] SYSTEM_LIST= new String []{
             "com.android.backupconfirm",
             "com.cyanogenmod.filemanager",
             "com.android.providers.userdictionary",
