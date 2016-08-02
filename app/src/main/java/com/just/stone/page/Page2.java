@@ -5,14 +5,18 @@ import android.content.IntentFilter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.just.stone.R;
 import com.just.stone.constant.WhiteListConstant;
 import com.just.stone.manager.InstalledPackageManager;
-import com.just.stone.model.pojo.AppInfo;
+import com.just.stone.model.eventbus.OnForceStopApps;
+import com.just.stone.model.eventbus.OnNotifyService;
+import com.just.stone.model.pojo.StopAppInfo;
 import com.just.stone.service.StoneAccessibilityService;
 import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
@@ -22,15 +26,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by Zac on 2016/8/1.
  */
 public class Page2 extends Page{
 
     ListView mListView;
-    ArrayList<AppInfo> mAppList;
+    ArrayList<StopAppInfo> mAppList;
     ViewAdapter mAdapter;
-    List<AppInfo> mListToKill;
+    ArrayList<StopAppInfo> mListToKill;
 
     public Page2(Activity context, int mViewId){
         super(context, mViewId);
@@ -50,7 +56,7 @@ public class Page2 extends Page{
                     || pkgName.equals("com.just.stone")){
                 continue;
             }
-            AppInfo info = new AppInfo();
+            StopAppInfo info = new StopAppInfo();
             info.packageName = pkgName;
             info.name = AppManagerUtil.getNameByPackage(pkgName);
             mAppList.add(info);
@@ -69,16 +75,12 @@ public class Page2 extends Page{
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(StoneAccessibilityService.getCallBackAction(mContext));
-//        mContext.registerReceiver(mBroadCastReceiver, intentFilter);
 
         TextView stopTv = (TextView)mView.findViewById(R.id.button_force_stop);
         stopTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListToKill = (List)mAppList.clone();
-                AppInfo info = mListToKill.get(0);
-                AppManagerUtil.forceStopApp(mContext, info.packageName, false);
-                mListToKill.remove(0);
+                startForceStop();
             }
         });
     }
@@ -109,32 +111,32 @@ public class Page2 extends Page{
         public View getView (int position, View convertView, ViewGroup parent){
             if (convertView == null){
                 convertView = mContext.getLayoutInflater().inflate(R.layout.layout_app_item, null);
+                ViewHolder.<CheckBox>get(convertView, R.id.app_item_check).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        LogUtil.d("item", "click: " + (int)v.getTag());
+                        CheckBox checkBox = (CheckBox)v;
+                        boolean isChecked = checkBox.isChecked();
+                        StopAppInfo item = (StopAppInfo)getItem((int)v.getTag());
+                        item.isChecked = isChecked;
+                    }
+                });
                 // set onclicklistener
             }
 
-            final AppInfo itemData = (AppInfo) getItem(position);
+            final StopAppInfo itemData = (StopAppInfo) getItem(position);
             ViewHolder.<ImageView>get(convertView, R.id.app_item_icon).setImageDrawable(AppManagerUtil.getPackageIcon(itemData.packageName));
             ViewHolder.<TextView>get(convertView, R.id.app_item_name).setText(itemData.name);
-            convertView.setTag(position);
+            ViewHolder.<CheckBox>get(convertView, R.id.app_item_check).setTag(position);
             return convertView;
         }
     }
 
-    public void continueKill(){
-        if (mListToKill.size() == 0){
-            return;
-        }
-        AppInfo info = mListToKill.remove(0);
-        if (AppManagerUtil.isPackageStopped(info.packageName)){
-            return;
-        }
-
-        if (info.packageName.equals("com.just.stone")){
-            return;
-        }
-
-        AppManagerUtil.forceStopApp(mContext, info.packageName, false);
-        LogUtil.d("force-stop", info.packageName);
+    private void startForceStop(){
+        EventBus.getDefault().post(new OnForceStopApps((List)mListToKill.clone()));
     }
 
+    public void onEventMainThread(){
+
+    }
 }

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.usage.UsageEvents;
 import android.view.View;
 
+import com.just.stone.model.eventbus.OnNoneEvent;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -63,5 +65,8 @@ public abstract class Page {
         if (!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().unregister(this);
         }
+    }
+
+    protected  void onEventAsync(OnNoneEvent event){
     }
 }

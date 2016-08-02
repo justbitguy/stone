@@ -41,9 +41,9 @@ public class StoneActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stone);
         init();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(StoneAccessibilityService.getCallBackAction(this));
-        this.registerReceiver(mBroadCastReceiver, intentFilter);
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction(StoneAccessibilityService.getCallBackAction(this));
+//        this.registerReceiver(mBroadCastReceiver, intentFilter);
     }
 
     @Override
@@ -144,8 +144,8 @@ public class StoneActivity extends Activity {
             if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
                 LogUtil.d("access", "receive broadcast");
                 if (intent.getIntExtra("result", 1) == 1) {
-                    SystemClock.sleep(2000);
-                    mPage2.continueKill();
+//                    SystemClock.sleep(2000);
+//                    mPage2.continueKill();
                 }
             }
         }
