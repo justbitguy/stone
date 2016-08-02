@@ -18,6 +18,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
+import com.just.stone.model.eventbus.OnNotifyService;
 import com.just.stone.page.Page;
 import com.just.stone.page.Page2;
 import com.just.stone.service.StoneAccessibilityService;
@@ -26,6 +27,8 @@ import com.just.stone.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 public class StoneActivity extends Activity {
     List<View> viewList = new ArrayList<View>();
@@ -129,7 +132,8 @@ public class StoneActivity extends Activity {
         findViewById(R.id.layout_top_tool_third).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppManagerUtil.forceStopApp(StoneActivity.this, "com.quick.powermanager", false);
+//                AppManagerUtil.forceStopApp(StoneActivity.this, "com.quick.powermanager", false);
+                EventBus.getDefault().post(new OnNotifyService());
             }
         });
     }

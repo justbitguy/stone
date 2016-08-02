@@ -1,4 +1,4 @@
-package com.just.stone.model;
+package com.just.stone.model.pojo;
 
 /**
  * Created by Zac on 2016/8/1.

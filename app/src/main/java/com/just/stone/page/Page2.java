@@ -1,24 +1,18 @@
 package com.just.stone.page;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.just.stone.R;
-import com.just.stone.StoneActivity;
 import com.just.stone.constant.WhiteListConstant;
 import com.just.stone.manager.InstalledPackageManager;
-import com.just.stone.model.AppInfo;
+import com.just.stone.model.pojo.AppInfo;
 import com.just.stone.service.StoneAccessibilityService;
 import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
@@ -121,6 +115,7 @@ public class Page2 extends Page{
             final AppInfo itemData = (AppInfo) getItem(position);
             ViewHolder.<ImageView>get(convertView, R.id.app_item_icon).setImageDrawable(AppManagerUtil.getPackageIcon(itemData.packageName));
             ViewHolder.<TextView>get(convertView, R.id.app_item_name).setText(itemData.name);
+            convertView.setTag(position);
             return convertView;
         }
     }
@@ -142,14 +137,4 @@ public class Page2 extends Page{
         LogUtil.d("force-stop", info.packageName);
     }
 
-//    private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
-//                LogUtil.d("access", "receive broadcast");
-//                if (intent.getIntExtra("result", 1) == 1) {
-//                }
-//            }
-//        }
-//    };
 }

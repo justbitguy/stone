@@ -1,7 +1,10 @@
 package com.just.stone.page;
 
 import android.app.Activity;
+import android.app.usage.UsageEvents;
 import android.view.View;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Zac on 2016/8/1.
@@ -23,6 +26,17 @@ public abstract class Page {
     protected void init(){
         initData();
         initView();
+        mView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                onAttached();
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                onDetached();
+            }
+        });
     }
 
     protected void initData(){
@@ -37,5 +51,17 @@ public abstract class Page {
 
     public View getView(){
         return mView;
+    }
+
+    protected void onAttached(){
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    protected void onDetached(){
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this);
+        }
     }
 }
