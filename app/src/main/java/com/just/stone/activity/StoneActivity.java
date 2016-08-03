@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,6 +135,13 @@ public class StoneActivity extends Activity {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new OnNotifyService());
+                DisplayMetrics metric = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metric);
+
+                int width = metric.widthPixels;  // 宽度（PX）
+                int height = metric.heightPixels;  // 高度（PX）
+                LogUtil.d("screen", "width: " + width + ", height: " + height);
+
             }
         });
     }

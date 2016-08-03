@@ -2,15 +2,19 @@ package com.just.stone.service;
 
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 
+import com.just.stone.ApplicationEx;
 import com.just.stone.R;
 import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
@@ -28,6 +32,7 @@ public class StoneAccessibilityService extends AccessibilityService {
     public static final int CLICK_RESULT_DISABLE = -2;
     public static final int CLICK_RESULT_NOT_FOUND = -3;
     public static final int CLICK_RESULT_NOT_SUPPORT = -4;
+    public static final int REQUEST_SHOW_ACCESSIBILITY_SETTINGS = 1586;
 
     private static final String ACTION_CALLBACK = "PowerAccessibilityService.Callback";
 
@@ -425,5 +430,33 @@ public class StoneAccessibilityService extends AccessibilityService {
 
     public static String getCallBackAction(Context context) {
         return context.getPackageName() + "." + ACTION_CALLBACK;
+    }
+
+    public static boolean showAccessibilitySettings(Activity activity) {
+        Intent intent = new Intent("android.settings.ACCESSIBILITY_SETTINGS");
+        try {
+            activity.startActivityForResult(intent, REQUEST_SHOW_ACCESSIBILITY_SETTINGS);
+            return true;
+        } catch (ActivityNotFoundException e) {
+            return false;
+        }
+    }
+
+    public static boolean isEnabled(Context context) {
+        boolean enable = false;
+        try {
+            int accessibilityEnabled = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED);
+
+            if (accessibilityEnabled == 1) {
+                String settingValue = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+                if (settingValue != null && settingValue.contains(StoneAccessibilityService.class.getSimpleName()) && settingValue.contains(context.getPackageName())) {
+                    enable = true;
+                }
+            }
+        } catch (Settings.SettingNotFoundException e) {
+        }finally {
+            //ApplicationEx.getInstance().resetAccessibilityStatusIfNeed(enable);
+            return enable;
+        }
     }
 }

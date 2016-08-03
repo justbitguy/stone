@@ -8,26 +8,28 @@
         android:icon="@mipmap/stone"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:largeHeap="true"
+        android:persistent="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StoneActivity">
+        <activity android:name=".activity.StoneActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.ForceStopActivity" />
+
         <service android:name=".service.StoneAccessibilityService"
             android:label="@string/accessibility_service_label"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:process=":stone_service_accessibility">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
-        </service>
-        <service android:name=".service.LocalService"
-            android:label="LocalService">
         </service>
     </application>
 
