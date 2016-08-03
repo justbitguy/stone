@@ -46,6 +46,7 @@ public class ForceStopActivity extends Activity{
 
     @Override
     protected void onDestroy(){
+        this.unregisterReceiver(mBroadCastReceiver);
         super.onDestroy();
     }
 
