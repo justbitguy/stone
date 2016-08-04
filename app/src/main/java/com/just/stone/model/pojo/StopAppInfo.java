@@ -7,8 +7,10 @@ public class StopAppInfo {
     public String packageName;
     public String name;
     public boolean isChecked;
+    public boolean isStopped;
 
     public StopAppInfo(){
         isChecked = true;
+        isStopped = false;
     }
 }

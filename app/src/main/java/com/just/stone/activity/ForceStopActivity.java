@@ -7,40 +7,37 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.just.stone.R;
-import com.just.stone.constant.WhiteListConstant;
-import com.just.stone.manager.InstalledPackageManager;
-import com.just.stone.model.pojo.StopAppInfo;
+
+import com.just.stone.async.Async;
+import com.just.stone.model.eventbus.OnAllStopped;
 import com.just.stone.service.StoneAccessibilityService;
 import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
-import com.just.stone.view.ViewHolder;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Zac on 2016/8/2.
  */
 public class ForceStopActivity extends Activity{
 
-    ListView mListView;
-    List<StopAppInfo> mAppList;
-    ViewAdapter mAdapter;
+//    ListView mListView;
+//    List<StopAppInfo> mAppList;
+    List<String> mStopList;
+//    ViewAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activiy_force_stop);
+        mStopList = getIntent().getStringArrayListExtra("stopList");
         init();
     }
 
@@ -53,40 +50,22 @@ public class ForceStopActivity extends Activity{
     private void init(){
         initData();
         initView();
+        Async.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startForceStop();
+            }
+        });
     }
 
     private void initData(){
-        mAppList = new ArrayList<>();
-        Set<String> installedApps = InstalledPackageManager.getInstance().getPkgNameOfInstalledApp();
-        for (String pkgName : installedApps){
-            if (AppManagerUtil.isPackageStopped(pkgName)
-                    || WhiteListConstant.systemList().contains(pkgName)
-                    || AppManagerUtil.isSystemApp(pkgName)
-                    || pkgName.equals(this.getPackageName())){
-                continue;
-            }
-            StopAppInfo info = new StopAppInfo();
-            info.packageName = pkgName;
-            info.name = AppManagerUtil.getNameByPackage(pkgName);
-            mAppList.add(info);
-        }
-
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(StoneAccessibilityService.getCallBackAction(this));
         this.registerReceiver(mBroadCastReceiver, intentFilter);
     }
 
     private void initView(){
-        mListView = (ListView)findViewById(R.id.list_app_view);
-        mAdapter = new ViewAdapter();
-        mListView.setAdapter(mAdapter);
-
-        findViewById(R.id.button_force_stop).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startForceStop();
-            }
-        });
+        setContentView(R.layout.activiy_force_stop);
     }
 
     private void startForceStop(){
@@ -104,7 +83,7 @@ public class ForceStopActivity extends Activity{
             case StoneAccessibilityService.REQUEST_SHOW_ACCESSIBILITY_SETTINGS:
                 if (StoneAccessibilityService.isEnabled(getApplicationContext())) {
                     finishActivity(StoneAccessibilityService.REQUEST_SHOW_ACCESSIBILITY_SETTINGS);
-                    forceStopNext();
+                    startForceStop();
                 }
                 break;
             default:
@@ -112,46 +91,9 @@ public class ForceStopActivity extends Activity{
         }
     }
 
-    private class ViewAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount(){
-            return mAppList.size();
-        }
-
-        @Override
-        public Object getItem(int position){
-            return mAppList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position){
-            return position;
-        }
-
-        @Override
-        public View getView (int position, View convertView, ViewGroup parent){
-            if (convertView == null){
-                convertView = ForceStopActivity.this.getLayoutInflater().inflate(R.layout.layout_app_item, null);
-                ViewHolder.<CheckBox>get(convertView, R.id.app_item_check).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        LogUtil.d("item", "click: " + (int)v.getTag());
-                        CheckBox checkBox = (CheckBox)v;
-                        boolean isChecked = checkBox.isChecked();
-                        StopAppInfo item = (StopAppInfo)getItem((int)v.getTag());
-                        item.isChecked = isChecked;
-                    }
-                });
-                // set onclicklistener
-            }
-
-            final StopAppInfo itemData = (StopAppInfo) getItem(position);
-            ViewHolder.<ImageView>get(convertView, R.id.app_item_icon).setImageDrawable(AppManagerUtil.getPackageIcon(itemData.packageName));
-            ViewHolder.<TextView>get(convertView, R.id.app_item_name).setText(itemData.name);
-            ViewHolder.<CheckBox>get(convertView, R.id.app_item_check).setTag(position);
-            return convertView;
-        }
+    private void updateUI(String packageName){
+        TextView tv = (TextView)findViewById(R.id.tv_app_name);
+        tv.setText(packageName);
     }
 
     private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
@@ -168,20 +110,18 @@ public class ForceStopActivity extends Activity{
     };
 
     private void forceStopNext(){
-        if (mAppList.size() == 0){
+        if (mStopList.size() == 0) {
             this.finishActivity(AppManagerUtil.REQUEST_CODE_FORCE_STOP);
+            EventBus.getDefault().post(new OnAllStopped());
             return;
         }
-        synchronized (mAppList) {
-            StopAppInfo stopInfo = null;
-            for (StopAppInfo info : mAppList){
-                if (info.isChecked){
-                    stopInfo = info;
-                }
-            }
-            if (stopInfo != null) {
-                AppManagerUtil.forceStopApp(this, stopInfo.packageName, false);
-                mAppList.remove(stopInfo);
+
+        String stopPackage = null;
+        synchronized (mStopList) {
+            stopPackage = mStopList.remove(0);
+            if (stopPackage != null) {
+                updateUI(stopPackage);
+                AppManagerUtil.forceStopApp(this, stopPackage, false);
             }
         }
     }
