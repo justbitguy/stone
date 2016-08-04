@@ -5,10 +5,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.just.stone.ApplicationEx;
 import com.just.stone.R;
 
 import com.just.stone.async.Async;
@@ -32,7 +36,9 @@ public class ForceStopActivity extends Activity{
 //    ListView mListView;
 //    List<StopAppInfo> mAppList;
     List<String> mStopList;
-//    ViewAdapter mAdapter;
+    ViewGroup mCoverView;
+    ViewGroup.LayoutParams mCoverViewLayoutParams;
+    private WindowManager mWindowManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -66,6 +72,18 @@ public class ForceStopActivity extends Activity{
 
     private void initView(){
         setContentView(R.layout.activiy_force_stop);
+        mCoverView = (ViewGroup) getLayoutInflater().inflate(R.layout.layout_stop_cover, null);
+        mWindowManager = (WindowManager) ApplicationEx.getInstance().getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+        mCoverViewLayoutParams = new WindowManager.LayoutParams
+                (
+                        WindowManager.LayoutParams.MATCH_PARENT,
+                        WindowManager.LayoutParams.MATCH_PARENT,
+                        WindowManager.LayoutParams.TYPE_PHONE,
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                                | WindowManager.LayoutParams.FLAG_FULLSCREEN
+                                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                        PixelFormat.TRANSLUCENT
+                );
     }
 
     private void startForceStop(){
@@ -73,6 +91,8 @@ public class ForceStopActivity extends Activity{
             StoneAccessibilityService.showAccessibilitySettings(this);
             return;
         }
+
+        mWindowManager.addView(mCoverView, mCoverViewLayoutParams);
         forceStopNext();
     }
 
@@ -92,7 +112,7 @@ public class ForceStopActivity extends Activity{
     }
 
     private void updateUI(String packageName){
-        TextView tv = (TextView)findViewById(R.id.tv_app_name);
+        TextView tv = (TextView)mCoverView.findViewById(R.id.tv_app_name);
         tv.setText(packageName);
     }
 
@@ -113,6 +133,7 @@ public class ForceStopActivity extends Activity{
         if (mStopList.size() == 0) {
             this.finishActivity(AppManagerUtil.REQUEST_CODE_FORCE_STOP);
             EventBus.getDefault().post(new OnAllStopped());
+            finish();
             return;
         }
 
