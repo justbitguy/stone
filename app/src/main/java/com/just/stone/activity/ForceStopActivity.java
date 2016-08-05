@@ -140,7 +140,8 @@ public class ForceStopActivity extends Activity{
 
     private void updateUI(String packageName){
         TextView tv = (TextView)mCoverView.findViewById(R.id.tv_app_name);
-        tv.setText(packageName);
+        tv.setText(AppManagerUtil.getNameByPackage(packageName));
+        mCoverView.findViewById(R.id.iv_app_icon).setBackgroundDrawable(AppManagerUtil.getPackageIcon(packageName));
     }
 
     private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {

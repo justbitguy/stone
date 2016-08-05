@@ -120,6 +120,7 @@ public class Page2 extends Page{
 
     @Override
     public void onPageSelected(){
+        mAdapter.notifyDataSetChanged();
     }
 
     private class ViewAdapter extends BaseAdapter {
