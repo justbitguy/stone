@@ -5,22 +5,27 @@
     android:theme="@android:style/Theme.Holo"
     android:background="@android:color/background_light">
     <LinearLayout
-        android:id="@+id/layout_app"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
-        <ImageView
-            android:id="@+id/iv_app_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@android:color/background_light"/>
-        <TextView
-            android:id="@+id/tv_app_name"
+        android:gravity="center">
+        <LinearLayout
+            android:id="@+id/layout_app"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:textSize="20dp"
-            android:text="AppName"/>
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/iv_app_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@android:color/background_light"/>
+            <TextView
+                android:id="@+id/tv_app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:textSize="20dp"
+                android:text="AppName"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

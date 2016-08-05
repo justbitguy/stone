@@ -1,15 +1,20 @@
 package com.just.stone.activity;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
+import android.net.LinkAddress;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.just.stone.ApplicationEx;
@@ -141,7 +146,15 @@ public class ForceStopActivity extends Activity{
     private void updateUI(String packageName){
         TextView tv = (TextView)mCoverView.findViewById(R.id.tv_app_name);
         tv.setText(AppManagerUtil.getNameByPackage(packageName));
-        mCoverView.findViewById(R.id.iv_app_icon).setBackgroundDrawable(AppManagerUtil.getPackageIcon(packageName));
+        ImageView iv = (ImageView)mCoverView.findViewById(R.id.iv_app_icon);
+        iv.setBackgroundDrawable(AppManagerUtil.getPackageIcon(packageName));
+        LinearLayout layout = (LinearLayout)findViewById(R.id.layout_app);
+        ObjectAnimator anim1 = ObjectAnimator.ofFloat(iv, "alpha", 1f, 0f);
+        ObjectAnimator anim2 = ObjectAnimator.ofFloat(iv, "translationY", 200, 0);
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.play(anim1).with(anim2);
+        animSet.setDuration(1000);
+        animSet.start();
     }
 
     private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
