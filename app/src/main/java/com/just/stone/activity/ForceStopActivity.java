@@ -71,14 +71,14 @@ public class ForceStopActivity extends Activity{
     }
 
     private void initView(){
-        setContentView(R.layout.activiy_force_stop);
+        setContentView(R.layout.layout_stop_cover);
         mCoverView = (ViewGroup) getLayoutInflater().inflate(R.layout.layout_stop_cover, null);
         mWindowManager = (WindowManager) ApplicationEx.getInstance().getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         mCoverViewLayoutParams = new WindowManager.LayoutParams
                 (
                         WindowManager.LayoutParams.MATCH_PARENT,
                         WindowManager.LayoutParams.MATCH_PARENT,
-                        WindowManager.LayoutParams.TYPE_PHONE,
+                        WindowManager.LayoutParams.TYPE_TOAST,
                         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                                 | WindowManager.LayoutParams.FLAG_FULLSCREEN
                                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
@@ -91,10 +91,10 @@ public class ForceStopActivity extends Activity{
             StoneAccessibilityService.showAccessibilitySettings(this);
             return;
         }
-
         mWindowManager.addView(mCoverView, mCoverViewLayoutParams);
         forceStopNext();
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -132,6 +132,7 @@ public class ForceStopActivity extends Activity{
     private void forceStopNext(){
         if (mStopList.size() == 0) {
             this.finishActivity(AppManagerUtil.REQUEST_CODE_FORCE_STOP);
+            mWindowManager.removeViewImmediate(mCoverView);
             EventBus.getDefault().post(new OnAllStopped());
             finish();
             return;
