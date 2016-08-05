@@ -25,6 +25,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.greenrobot.event.EventBus;
 
@@ -33,12 +34,12 @@ import de.greenrobot.event.EventBus;
  */
 public class ForceStopActivity extends Activity{
 
-//    ListView mListView;
-//    List<StopAppInfo> mAppList;
     List<String> mStopList;
     ViewGroup mCoverView;
     ViewGroup.LayoutParams mCoverViewLayoutParams;
     private WindowManager mWindowManager;
+    private final Object mCoverLock = new Object();
+    private AtomicBoolean isCovered = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -49,6 +50,7 @@ public class ForceStopActivity extends Activity{
 
     @Override
     protected void onDestroy(){
+        removeCover();
         this.unregisterReceiver(mBroadCastReceiver);
         super.onDestroy();
     }
@@ -86,12 +88,37 @@ public class ForceStopActivity extends Activity{
                 );
     }
 
+    private void addCover(){
+        if (isCovered.get()){
+            return;
+        }
+        synchronized (mCoverLock) {
+            if (mWindowManager != null) {
+                mWindowManager.addView(mCoverView, mCoverViewLayoutParams);
+                isCovered.set(true);
+            }
+        }
+    }
+
+    private void removeCover(){
+        if (!isCovered.get()){
+            return;
+        }
+
+        synchronized (mCoverLock) {
+            if (mWindowManager != null) {
+                mWindowManager.removeView(mCoverView);
+                isCovered.set(false);
+            }
+        }
+    }
+
     private void startForceStop(){
         if (!StoneAccessibilityService.isEnabled(this)) {
             StoneAccessibilityService.showAccessibilitySettings(this);
             return;
         }
-        mWindowManager.addView(mCoverView, mCoverViewLayoutParams);
+        addCover();
         forceStopNext();
     }
 
@@ -132,7 +159,7 @@ public class ForceStopActivity extends Activity{
     private void forceStopNext(){
         if (mStopList.size() == 0) {
             this.finishActivity(AppManagerUtil.REQUEST_CODE_FORCE_STOP);
-            mWindowManager.removeViewImmediate(mCoverView);
+            removeCover();
             EventBus.getDefault().post(new OnAllStopped());
             finish();
             return;
