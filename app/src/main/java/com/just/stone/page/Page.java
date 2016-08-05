@@ -51,6 +51,9 @@ public abstract class Page {
     public void onPageSelected(){
     }
 
+    public void onResume(){
+    }
+
     public View getView(){
         return mView;
     }

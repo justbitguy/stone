@@ -43,14 +43,16 @@ public class StoneActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stone);
         init();
-//        IntentFilter intentFilter = new IntentFilter();
-//        intentFilter.addAction(StoneAccessibilityService.getCallBackAction(this));
-//        this.registerReceiver(mBroadCastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        mPage2.onResume();
     }
 
     @Override
     protected void onDestroy() {
-//        this.unregisterReceiver(mBroadCastReceiver);
         super.onDestroy();
     }
 
@@ -114,7 +116,6 @@ public class StoneActivity extends Activity {
             }
         });
         View view1 = getLayoutInflater().inflate(R.layout.layout_view1, null);
-//        View view2 = getLayoutInflater().inflate(R.layout.layout_view2, null);
          mPage2 = new Page2(this, R.layout.layout_view2);
         View view3 = getLayoutInflater().inflate(R.layout.layout_view3, null);
         viewList.add(view1);
@@ -145,15 +146,4 @@ public class StoneActivity extends Activity {
             }
         });
     }
-
-//    private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
-//                LogUtil.d("access", "receive broadcast");
-//                if (intent.getIntExtra("result", 1) == 1) {
-//                }
-//            }
-//        }
-//    };
 }

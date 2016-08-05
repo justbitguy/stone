@@ -1,7 +1,10 @@
 package com.just.stone.activity;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
+import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -147,12 +150,12 @@ public class ForceStopActivity extends Activity{
         TextView tv = (TextView)mCoverView.findViewById(R.id.tv_app_name);
         tv.setText(AppManagerUtil.getNameByPackage(packageName));
         ImageView iv = (ImageView)mCoverView.findViewById(R.id.iv_app_icon);
-        iv.setBackgroundDrawable(AppManagerUtil.getPackageIcon(packageName));
-        LinearLayout layout = (LinearLayout)findViewById(R.id.layout_app);
+        iv.setImageDrawable(AppManagerUtil.getPackageIcon(packageName));
         ObjectAnimator anim1 = ObjectAnimator.ofFloat(iv, "alpha", 1f, 0f);
         ObjectAnimator anim2 = ObjectAnimator.ofFloat(iv, "translationY", 200, 0);
+        ObjectAnimator anim3 = ObjectAnimator.ofFloat(tv, "alpha", 1f, 0f);
         AnimatorSet animSet = new AnimatorSet();
-        animSet.play(anim1).with(anim2);
+        animSet.play(anim1).with(anim2).with(anim3);
         animSet.setDuration(1000);
         animSet.start();
     }
@@ -163,7 +166,7 @@ public class ForceStopActivity extends Activity{
             if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
                 LogUtil.d("access", "receive broadcast");
                 if (intent.getIntExtra("result", 1) == 1) {
-                    SystemClock.sleep(1000);
+                    SystemClock.sleep(500);
                     forceStopNext();
                 }
             }
@@ -173,9 +176,14 @@ public class ForceStopActivity extends Activity{
     private void forceStopNext(){
         if (mStopList.size() == 0) {
             this.finishActivity(AppManagerUtil.REQUEST_CODE_FORCE_STOP);
-            removeCover();
-            EventBus.getDefault().post(new OnAllStopped());
-            finish();
+            Async.scheduleTaskOnUiThread(1000, new Runnable() {
+                @Override
+                public void run() {
+                    removeCover();
+                    EventBus.getDefault().post(new OnAllStopped());
+                    finish();
+                }
+            });
             return;
         }
 

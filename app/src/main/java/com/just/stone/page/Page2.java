@@ -43,8 +43,8 @@ import de.greenrobot.event.EventBus;
 public class Page2 extends Page{
 
     ListView mListView;
-    List<StopAppInfo> mAppList;
-    ArrayList<String> mStopList;
+    List<StopAppInfo> mAppList = new ArrayList<>();
+    ArrayList<String> mStopList = new ArrayList<>();
     ViewAdapter mAdapter;
 
 
@@ -59,9 +59,11 @@ public class Page2 extends Page{
     @Override
     protected void initData(){
         super.initData();
-
         mAppList = new ArrayList<>();
-        mStopList = new ArrayList<>();
+        updateAppList();
+    }
+
+    private void updateAppList(){
         Set<String> installedApps = InstalledPackageManager.getInstance().getPkgNameOfInstalledApp();
         for (String pkgName : installedApps){
             if (AppManagerUtil.isPackageStopped(pkgName)
@@ -71,10 +73,7 @@ public class Page2 extends Page{
                     || pkgName.equals(mContext.getPackageName())){
                 continue;
             }
-            StopAppInfo info = new StopAppInfo();
-            info.packageName = pkgName;
-            info.name = AppManagerUtil.getNameByPackage(pkgName);
-            mAppList.add(info);
+            addToAppList(pkgName);
         }
     }
 
@@ -102,7 +101,31 @@ public class Page2 extends Page{
 
     }
 
-    public void onEventAsync(OnAllStopped event){
+    @Override
+    public void onResume(){
+        super.onResume();
+        updateAppList();
+    }
+
+    private void addToAppList(String packageName){
+        synchronized (mAppList){
+            boolean found = false;
+            for (StopAppInfo info : mAppList){
+                if (info.packageName.equals(packageName)){
+                    found = true;
+                    break;
+                }
+            }
+            if (!found){
+                StopAppInfo newInfo = new StopAppInfo();
+                newInfo.packageName = packageName;
+                newInfo.name = AppManagerUtil.getNameByPackage(packageName);
+                mAppList.add(newInfo);
+            }
+        }
+    }
+
+    public void onEventMainThread(OnAllStopped event){
         for (String packageName : mStopList){
             synchronized (mAppList) {
                 int index = -1;
@@ -116,6 +139,7 @@ public class Page2 extends Page{
                 }
             }
         }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
