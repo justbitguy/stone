@@ -109,7 +109,8 @@ public class WhiteListConstant {
         "com.cyngn.bookmarkprovider",
         "com.android.pacprocessor",
         "com.android.terminal",
-        "com.cyngn.discovery"
+        "com.cyngn.discovery",
+        "com.android.settings"
     };
 
     public static final String[] INPUT_METHOD_LIST = new String[]{
