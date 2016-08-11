@@ -14,6 +14,7 @@ import android.graphics.PixelFormat;
 import android.net.LinkAddress;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -41,6 +42,13 @@ import de.greenrobot.event.EventBus;
  * Created by Zac on 2016/8/2.
  */
 public class ForceStopActivity extends Activity{
+    private static final long STOP_TIMEOUT = 15 * 1000;
+    private static final long STOP_INTERVAL = 500;
+    private static final long PER_STOP_TIMEOUT = 5 * 1000;
+    private static final String TAG = "force-stop";
+
+    private static final String ACTION_CHANGE_CANDO = "PowerAccessibilityService.ChangeCando";
+    public static final String KEY_INTENT_CANDO = "cando";
 
     List<String> mStopList;
     ViewGroup mCoverView;
@@ -48,6 +56,7 @@ public class ForceStopActivity extends Activity{
     private WindowManager mWindowManager;
     private final Object mCoverLock = new Object();
     private AtomicBoolean isCovered = new AtomicBoolean(false);
+    private AtomicBoolean isOver = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -121,15 +130,19 @@ public class ForceStopActivity extends Activity{
         }
     }
 
-    private void startForceStop(){
-        if (!StoneAccessibilityService.isEnabled(this)) {
-            StoneAccessibilityService.showAccessibilitySettings(this);
-            return;
-        }
-        addCover();
-        forceStopNext();
+    private void updateUI(String packageName){
+        TextView tv = (TextView)mCoverView.findViewById(R.id.tv_app_name);
+        tv.setText(AppManagerUtil.getNameByPackage(packageName));
+        ImageView iv = (ImageView)mCoverView.findViewById(R.id.iv_app_icon);
+        iv.setImageDrawable(AppManagerUtil.getPackageIcon(packageName));
+        ObjectAnimator anim1 = ObjectAnimator.ofFloat(iv, "alpha", 1f, 0f);
+        ObjectAnimator anim2 = ObjectAnimator.ofFloat(iv, "translationY", 200, 0);
+        ObjectAnimator anim3 = ObjectAnimator.ofFloat(tv, "alpha", 1f, 0f);
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.play(anim1).with(anim2).with(anim3);
+        animSet.setDuration(500);
+        animSet.start();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -146,44 +159,23 @@ public class ForceStopActivity extends Activity{
         }
     }
 
-    private void updateUI(String packageName){
-        TextView tv = (TextView)mCoverView.findViewById(R.id.tv_app_name);
-        tv.setText(AppManagerUtil.getNameByPackage(packageName));
-        ImageView iv = (ImageView)mCoverView.findViewById(R.id.iv_app_icon);
-        iv.setImageDrawable(AppManagerUtil.getPackageIcon(packageName));
-        ObjectAnimator anim1 = ObjectAnimator.ofFloat(iv, "alpha", 1f, 0f);
-        ObjectAnimator anim2 = ObjectAnimator.ofFloat(iv, "translationY", 200, 0);
-        ObjectAnimator anim3 = ObjectAnimator.ofFloat(tv, "alpha", 1f, 0f);
-        AnimatorSet animSet = new AnimatorSet();
-        animSet.play(anim1).with(anim2).with(anim3);
-        animSet.setDuration(1000);
-        animSet.start();
-    }
-
-    private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
-                LogUtil.d("access", "receive broadcast");
-                if (intent.getIntExtra("result", 1) == 1) {
-                    SystemClock.sleep(500);
-                    forceStopNext();
-                }
-            }
+    private void startForceStop(){
+        if (!StoneAccessibilityService.isEnabled(this)) {
+            StoneAccessibilityService.showAccessibilitySettings(this);
+            return;
         }
-    };
+
+        isOver.set(false);
+        LogUtil.d(TAG, "service.sIsStopping: " + StoneAccessibilityService.sIsStopping.get());
+        addCover();
+        forceStopNext();
+        Async.schedule(STOP_TIMEOUT, mTimeoutRunnable);
+    }
 
     private void forceStopNext(){
         if (mStopList.size() == 0) {
             this.finishActivity(AppManagerUtil.REQUEST_CODE_FORCE_STOP);
-            Async.scheduleTaskOnUiThread(1000, new Runnable() {
-                @Override
-                public void run() {
-                    removeCover();
-                    EventBus.getDefault().post(new OnAllStopped());
-                    finish();
-                }
-            });
+            Async.scheduleTaskOnUiThread(1000, mStopOverRunnable);
             return;
         }
 
@@ -191,9 +183,55 @@ public class ForceStopActivity extends Activity{
         synchronized (mStopList) {
             stopPackage = mStopList.remove(0);
             if (stopPackage != null) {
+                StoneAccessibilityService.setCando(this, true);
                 updateUI(stopPackage);
                 AppManagerUtil.forceStopApp(this, stopPackage, false);
+                Async.scheduleTaskOnUiThread(PER_STOP_TIMEOUT, mStopTimeoutRunnable);
             }
         }
     }
+
+    private Runnable mStopTimeoutRunnable = new Runnable() {
+        @Override
+        public void run() {
+            LogUtil.d(TAG, "per stop timeout.");
+            forceStopNext();
+        }
+    };
+
+    private Runnable mTimeoutRunnable = new Runnable() {
+        @Override
+        public void run() {
+            LogUtil.d(TAG, "Time Out!");
+            Async.runOnUiThread(mStopOverRunnable);
+        }
+    };
+
+    private Runnable mStopOverRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (isOver.get()){
+                return;
+            }
+            LogUtil.d(TAG, "stop over runnalbe!");
+            isOver.set(true);
+            removeCover();
+            EventBus.getDefault().post(new OnAllStopped());
+            finish();
+        }
+    };
+
+    private BroadcastReceiver mBroadCastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
+                LogUtil.d("access", "receive broadcast");
+                if (intent.getIntExtra("result", 1) == 1) {
+                    Async.removeScheduledTaskOnUiThread(mStopTimeoutRunnable);
+                    SystemClock.sleep(STOP_INTERVAL);
+                    forceStopNext();
+                }
+            }
+        }
+    };
 }

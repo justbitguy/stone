@@ -8,5 +8,5 @@
     <string name="ok_string">OK</string>
     <string name="null_string" translatable="false" />
     <string name="uninstalled_app">Uninstalled App</string>
-    <string name="force_stop_button">Force Stop</string>
+    <string name="force_stop_button">Force Stop</string>"
 </resources>

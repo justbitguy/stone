@@ -4,8 +4,10 @@ import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Build;
 import android.provider.Settings;
@@ -20,6 +22,7 @@ import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Zac on 2016/7/28.
@@ -34,7 +37,13 @@ public class StoneAccessibilityService extends AccessibilityService {
     public static final int CLICK_RESULT_NOT_SUPPORT = -4;
     public static final int REQUEST_SHOW_ACCESSIBILITY_SETTINGS = 1586;
 
+    public static AtomicBoolean sIsStopping = new AtomicBoolean(true);
+
     private static final String ACTION_CALLBACK = "PowerAccessibilityService.Callback";
+    private static final String ACTION_CHANGE_CANDO = "PowerAccessibilityService.ChangeCando";
+    public static final String KEY_INTENT_CANDO = "cando";
+
+    private static volatile boolean sCando = false;
 
     /**
      * 强制停止的按钮id
@@ -162,9 +171,14 @@ public class StoneAccessibilityService extends AccessibilityService {
     private boolean mReadstringable;
     private boolean mCanuseid;
 
-    public void OnCreate(){
+
+    public void onCreate(){
         mCanuseid = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
         mReadstringable = readForceStopString() != null;
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(getChangeCandoAction(getApplicationContext()));
+        registerReceiver(mChangeCandoReceiver, intentFilter);
     }
 
     @Override
@@ -239,7 +253,7 @@ public class StoneAccessibilityService extends AccessibilityService {
 //                }
             }
 
-//            if (!sCando) return;
+            if (!sCando) return;
 
             AccessibilityNodeInfo source = event.getSource();
 
@@ -327,8 +341,8 @@ public class StoneAccessibilityService extends AccessibilityService {
         Intent intent = new Intent();
         intent.setAction(getCallBackAction(getApplicationContext()));
         intent.putExtra(KEY_INTENT_CLICK_RESULT, result);
-//        if (!sCando) return;
-//        sCando = false;
+        if (!sCando) return;
+        sCando = false;
         sendBroadcast(intent);
     }
 
@@ -459,4 +473,30 @@ public class StoneAccessibilityService extends AccessibilityService {
             return enable;
         }
     }
+
+    public static void setCando(Context context, boolean cando) {
+        Intent stopintent = new Intent();
+        stopintent.setAction(getChangeCandoAction(context));
+        stopintent.putExtra(KEY_INTENT_CANDO, cando);
+        context.sendBroadcast(stopintent);
+    }
+
+    public static String getChangeCandoAction(Context context) {
+        return /*context.getPackageName() + "." + */ACTION_CHANGE_CANDO;
+    }
+
+    @Override
+    public void onDestroy() {
+        //LogUtil.d(LOG_TAG, "PowerAccessibilityService onDestroy");
+        unregisterReceiver(mChangeCandoReceiver);
+        super.onDestroy();
+    }
+
+    private BroadcastReceiver mChangeCandoReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            LogUtil.d("force-stop","receive mChangeCandoReceiver!");
+            sCando = intent.getBooleanExtra(KEY_INTENT_CANDO, false);
+        }
+    };
 }
