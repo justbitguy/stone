@@ -42,13 +42,9 @@ import de.greenrobot.event.EventBus;
  * Created by Zac on 2016/8/2.
  */
 public class ForceStopActivity extends Activity{
-    private static final long STOP_TIMEOUT = 15 * 1000;
     private static final long STOP_INTERVAL = 500;
     private static final long PER_STOP_TIMEOUT = 5 * 1000;
     private static final String TAG = "force-stop";
-
-    private static final String ACTION_CHANGE_CANDO = "PowerAccessibilityService.ChangeCando";
-    public static final String KEY_INTENT_CANDO = "cando";
 
     List<String> mStopList;
     ViewGroup mCoverView;
@@ -166,16 +162,16 @@ public class ForceStopActivity extends Activity{
         }
 
         isOver.set(false);
-        LogUtil.d(TAG, "service.sIsStopping: " + StoneAccessibilityService.sIsStopping.get());
         addCover();
+        Async.schedule(STOP_INTERVAL * 4 *  mStopList.size(), mAllTimeout);
         forceStopNext();
-        Async.schedule(STOP_TIMEOUT, mTimeoutRunnable);
     }
 
     private void forceStopNext(){
         if (mStopList.size() == 0) {
+            LogUtil.d(TAG, "stopList.size == 0");
             this.finishActivity(AppManagerUtil.REQUEST_CODE_FORCE_STOP);
-            Async.scheduleTaskOnUiThread(1000, mStopOverRunnable);
+            Async.scheduleTaskOnUiThread(1000, mAllOverTask);
             return;
         }
 
@@ -186,12 +182,12 @@ public class ForceStopActivity extends Activity{
                 StoneAccessibilityService.setCando(this, true);
                 updateUI(stopPackage);
                 AppManagerUtil.forceStopApp(this, stopPackage, false);
-                Async.scheduleTaskOnUiThread(PER_STOP_TIMEOUT, mStopTimeoutRunnable);
+                Async.scheduleTaskOnUiThread(PER_STOP_TIMEOUT, mPerStopTimeout);
             }
         }
     }
 
-    private Runnable mStopTimeoutRunnable = new Runnable() {
+    private Runnable mPerStopTimeout = new Runnable() {
         @Override
         public void run() {
             LogUtil.d(TAG, "per stop timeout.");
@@ -199,15 +195,15 @@ public class ForceStopActivity extends Activity{
         }
     };
 
-    private Runnable mTimeoutRunnable = new Runnable() {
+    private Runnable mAllTimeout = new Runnable() {
         @Override
         public void run() {
             LogUtil.d(TAG, "Time Out!");
-            Async.runOnUiThread(mStopOverRunnable);
+            Async.runOnUiThread(mAllOverTask);
         }
     };
 
-    private Runnable mStopOverRunnable = new Runnable() {
+    private Runnable mAllOverTask = new Runnable() {
         @Override
         public void run() {
             if (isOver.get()){
@@ -227,7 +223,7 @@ public class ForceStopActivity extends Activity{
             if (intent.getAction().equals(StoneAccessibilityService.getCallBackAction(context))){
                 LogUtil.d("access", "receive broadcast");
                 if (intent.getIntExtra("result", 1) == 1) {
-                    Async.removeScheduledTaskOnUiThread(mStopTimeoutRunnable);
+                    Async.removeScheduledTaskOnUiThread(mPerStopTimeout);
                     SystemClock.sleep(STOP_INTERVAL);
                     forceStopNext();
                 }
