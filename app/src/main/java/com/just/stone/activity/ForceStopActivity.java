@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.just.stone.ApplicationEx;
 import com.just.stone.R;
@@ -86,7 +87,7 @@ public class ForceStopActivity extends Activity{
     }
 
     private void initView(){
-        setContentView(R.layout.layout_stop_cover);
+        setContentView(R.layout.layout_stop);
         mCoverView = (ViewGroup) getLayoutInflater().inflate(R.layout.layout_stop_cover, null);
         mWindowManager = (WindowManager) ApplicationEx.getInstance().getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         mCoverViewLayoutParams = new WindowManager.LayoutParams
@@ -156,6 +157,11 @@ public class ForceStopActivity extends Activity{
     }
 
     private void startForceStop(){
+        if (mStopList.size() == 0){
+            Toast.makeText(this, "nothing to clear!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (!StoneAccessibilityService.isEnabled(this)) {
             StoneAccessibilityService.showAccessibilitySettings(this);
             return;
