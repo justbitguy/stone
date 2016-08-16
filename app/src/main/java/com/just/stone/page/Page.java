@@ -70,6 +70,6 @@ public abstract class Page {
         }
     }
 
-    protected  void onEventAsync(OnNoneEvent event){
+    public void onEventAsync(OnNoneEvent event){
     }
 }

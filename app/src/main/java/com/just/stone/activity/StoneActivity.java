@@ -25,6 +25,7 @@ import com.just.stone.manager.UploadManager;
 import com.just.stone.model.eventbus.OnNotifyService;
 import com.just.stone.page.Page;
 import com.just.stone.page.Page2;
+import com.just.stone.page.Page3;
 import com.just.stone.service.StoneAccessibilityService;
 import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
@@ -39,6 +40,7 @@ public class StoneActivity extends Activity {
     List<String> titleList = new ArrayList<>();
     ViewPager mViewPager;
     Page2 mPage2;
+    Page3 mPage3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,10 +122,12 @@ public class StoneActivity extends Activity {
 
         View view1 = getLayoutInflater().inflate(R.layout.layout_view1, null);
         mPage2 = new Page2(this, R.layout.layout_view2);
-        View view3 = getLayoutInflater().inflate(R.layout.layout_view3, null);
+        mPage3 = new Page3(this, R.layout.layout_view3);
+
         viewList.add(view1);
         viewList.add(mPage2.getView());
-        viewList.add(view3);
+        viewList.add(mPage3.getView());
+
         titleList.add("view1");
         titleList.add("view2");
         titleList.add("view3");
@@ -135,24 +139,24 @@ public class StoneActivity extends Activity {
     }
 
     private void bindAction(){
-        findViewById(R.id.layout_top_tool_first).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogUtil.d("upload", "start upload!");
-
-                Async.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            UploadManager.upLoadByCommonPost();
-                        } catch (Exception e){
-                            LogUtil.error(e);
-                        }
-                    }
-                });
-
-            }
-        });
+//        findViewById(R.id.layout_top_tool_first).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                LogUtil.d("upload", "start upload!");
+//
+//                Async.run(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try{
+//                            UploadManager.upLoadByCommonPost();
+//                        } catch (Exception e){
+//                            LogUtil.error(e);
+//                        }
+//                    }
+//                });
+//
+//            }
+//        });
 
         findViewById(R.id.layout_top_tool_third).setOnClickListener(new View.OnClickListener() {
             @Override
