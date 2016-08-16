@@ -20,6 +20,8 @@ import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
 import com.just.stone.R;
+import com.just.stone.async.Async;
+import com.just.stone.manager.UploadManager;
 import com.just.stone.model.eventbus.OnNotifyService;
 import com.just.stone.page.Page;
 import com.just.stone.page.Page2;
@@ -115,8 +117,9 @@ public class StoneActivity extends Activity {
 
             }
         });
+
         View view1 = getLayoutInflater().inflate(R.layout.layout_view1, null);
-         mPage2 = new Page2(this, R.layout.layout_view2);
+        mPage2 = new Page2(this, R.layout.layout_view2);
         View view3 = getLayoutInflater().inflate(R.layout.layout_view3, null);
         viewList.add(view1);
         viewList.add(mPage2.getView());
@@ -132,6 +135,25 @@ public class StoneActivity extends Activity {
     }
 
     private void bindAction(){
+        findViewById(R.id.layout_top_tool_first).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogUtil.d("upload", "start upload!");
+
+                Async.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            UploadManager.upLoadByCommonPost();
+                        } catch (Exception e){
+                            LogUtil.error(e);
+                        }
+                    }
+                });
+
+            }
+        });
+
         findViewById(R.id.layout_top_tool_third).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
