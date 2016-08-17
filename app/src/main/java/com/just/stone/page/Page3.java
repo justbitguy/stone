@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.just.stone.R;
+import com.just.stone.activity.ImageShowActivity;
 import com.just.stone.async.Async;
 import com.just.stone.manager.ImageDownload;
 import com.just.stone.manager.UploadManager;
@@ -66,6 +67,14 @@ public class Page3 extends Page{
                         ImageDownload.download();
                     }
                 });
+            }
+        });
+
+        mView.findViewById(R.id.tv_pick).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ImageShowActivity.class);
+                mContext.startActivity(intent);
             }
         });
     }

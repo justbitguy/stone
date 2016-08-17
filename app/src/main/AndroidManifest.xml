@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ForceStopActivity" />
+        <activity android:name=".activity.ImageShowActivity" />
 
         <service android:name=".service.StoneAccessibilityService"
             android:label="@string/accessibility_service_label"

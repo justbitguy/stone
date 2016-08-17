@@ -86,6 +86,7 @@ public class Page2 extends Page{
         mView.findViewById(R.id.start_force_stop).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mStopList.clear();
                 synchronized (mAppList){
                     for (StopAppInfo info : mAppList){
                         if (info.isChecked){
