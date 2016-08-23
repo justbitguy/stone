@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.view.PagerAdapter;
@@ -109,8 +110,24 @@ public class StoneActivity extends Activity {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 1){
-                    mPage2.onPageSelected();
+                switch(position) {
+                    case 0:
+                        findViewById(R.id.layout_bottom_tool_first_image).setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.white));
+                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.white));
+                        break;
+                    case 1:
+                        findViewById(R.id.layout_bottom_tool_first_image).setBackgroundColor(getResources().getColor(R.color.white));
+                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.white));
+                        mPage2.onPageSelected();
+                        break;
+                    case 2:
+                        findViewById(R.id.layout_bottom_tool_first_image).setBackgroundColor(getResources().getColor(R.color.white));
+                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.white));
+                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                        mPage3.onPageSelected();
+                        break;
                 }
             }
 
@@ -139,24 +156,14 @@ public class StoneActivity extends Activity {
     }
 
     private void bindAction(){
-//        findViewById(R.id.layout_top_tool_first).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                LogUtil.d("upload", "start upload!");
-//
-//                Async.run(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try{
-//                            UploadManager.upLoadByCommonPost();
-//                        } catch (Exception e){
-//                            LogUtil.error(e);
-//                        }
-//                    }
-//                });
-//
-//            }
-//        });
+        findViewById(R.id.layout_top_tool_first).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogUtil.d("version", "relase:" + Build.VERSION.RELEASE);
+                LogUtil.d("version", "patch: " + Build.VERSION.SECURITY_PATCH);
+                LogUtil.d("version", "SDK_INT: " + Build.VERSION.SDK_INT);
+            }
+        });
 
         findViewById(R.id.layout_top_tool_third).setOnClickListener(new View.OnClickListener() {
             @Override

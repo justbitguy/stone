@@ -9,14 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@android:color/holo_blue_bright"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="visible">
         <TextView
             android:id="@+id/layout_top_tool_first"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="8dp"
             android:layout_gravity="center_vertical"
-            android:background="@android:color/holo_orange_dark"/>
+            android:background="@android:color/white"/>
         <TextView
             android:id="@+id/layout_top_tool_second"
             android:layout_width="0dp"
@@ -32,7 +33,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_gravity="center_vertical"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/white"/>
     </LinearLayout>
 
     <android.support.v4.view.ViewPager

@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Stone</string>
-    <string name="index_first">first</string>
-    <string name="index_second">second</string>
-    <string name="index_third">third</string>
+    <string name="index_first">1st</string>
+    <string name="index_second">2nd</string>
+    <string name="index_third">3rd</string>
     <string name="accessibility_service_label">Stone</string>
     <string name="accessibility_service_description">turn on accessibility service to enable powerful service</string>
     <string name="ok_string">OK</string>
