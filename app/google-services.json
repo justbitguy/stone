@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "262488829997",
+    "firebase_url": "https://myproject-24e09.firebaseio.com",
+    "project_id": "myproject-24e09",
+    "storage_bucket": "myproject-24e09.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262488829997:android:c178058dba0feb3c",
+        "android_client_info": {
+          "package_name": "com.just.stone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "262488829997-2v919chii5gflvol9rivaih3vbsgnens.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9-N5TMj-0LzGBeBlu0wgS7iBt-3-0h7M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
