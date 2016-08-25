@@ -1,7 +1,9 @@
 package com.just.stone.activity;
 
 import android.app.Activity;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -20,11 +22,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
+import com.just.stone.ApplicationEx;
 import com.just.stone.R;
 import com.just.stone.async.Async;
+import com.just.stone.broadcast.DeviceAdminSampleReceiver;
 import com.just.stone.manager.UploadManager;
 import com.just.stone.model.eventbus.OnNotifyService;
 import com.just.stone.page.Page;
+import com.just.stone.page.Page1;
 import com.just.stone.page.Page2;
 import com.just.stone.page.Page3;
 import com.just.stone.service.StoneAccessibilityService;
@@ -40,8 +45,12 @@ public class StoneActivity extends Activity {
     List<View> viewList = new ArrayList<View>();
     List<String> titleList = new ArrayList<>();
     ViewPager mViewPager;
+    Page1 mPage1;
     Page2 mPage2;
     Page3 mPage3;
+    DeviceAdminSampleReceiver mDeviceAdminSample;
+
+    private static final int REQUEST_CODE_ENABLE_ADMIN = 12021;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,11 +146,11 @@ public class StoneActivity extends Activity {
             }
         });
 
-        View view1 = getLayoutInflater().inflate(R.layout.layout_view1, null);
+        mPage1 = new Page1(this, R.layout.layout_view1);
         mPage2 = new Page2(this, R.layout.layout_view2);
         mPage3 = new Page3(this, R.layout.layout_view3);
 
-        viewList.add(view1);
+        viewList.add(mPage1.getView());
         viewList.add(mPage2.getView());
         viewList.add(mPage3.getView());
 
@@ -162,6 +171,8 @@ public class StoneActivity extends Activity {
                 LogUtil.d("version", "relase:" + Build.VERSION.RELEASE);
                 LogUtil.d("version", "patch: " + Build.VERSION.SECURITY_PATCH);
                 LogUtil.d("version", "SDK_INT: " + Build.VERSION.SDK_INT);
+
+                // return false - don't update checkbox until we're really active
             }
         });
 

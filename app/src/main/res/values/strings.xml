@@ -9,4 +9,14 @@
     <string name="null_string" translatable="false" />
     <string name="uninstalled_app">Uninstalled App</string>
     <string name="force_stop_button">Force Stop</string>"
+
+    <string name="sample_device_admin">sample device</string>
+    <string name="sample_device_admin_description">sample device admin description</string>
+    <string name="device_admin_button">Device Admin</string>
+
+    <string name="admin_receiver_status">Receiver Status: %s</string>
+    <string name="admin_receiver_status_enabled">Admin Receiver Enabled</string>
+    <string name="admin_receiver_status_disable_warning">Admin Receiver Status Warn</string>
+    <string name="admin_receiver_status_disabled">Admin Receiver Disabled</string>
+    <string name="admin_receiver_status_pw_changed">Admin Receiver Password Changed</string>
 </resources>

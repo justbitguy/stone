@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "262488829997",
-    "firebase_url": "https://myproject-24e09.firebaseio.com",
-    "project_id": "myproject-24e09",
-    "storage_bucket": "myproject-24e09.appspot.com"
+    "project_number": "176850275713",
+    "firebase_url": "https://stone-b2037.firebaseio.com",
+    "project_id": "stone-b2037",
+    "storage_bucket": "stone-b2037.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:262488829997:android:c178058dba0feb3c",
+        "mobilesdk_app_id": "1:176850275713:android:c178058dba0feb3c",
         "android_client_info": {
           "package_name": "com.just.stone"
         }
       },
       "oauth_client": [
         {
-          "client_id": "262488829997-2v919chii5gflvol9rivaih3vbsgnens.apps.googleusercontent.com",
+          "client_id": "176850275713-p4qusidv63r0cbvv92s1givkubsk9r5p.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA9-N5TMj-0LzGBeBlu0wgS7iBt-3-0h7M"
+          "current_key": "AIzaSyD_oll9SqAANCkUuPo5c5GMpgmOf2xsybA"
         }
       ],
       "services": {
