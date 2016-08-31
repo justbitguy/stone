@@ -2,14 +2,16 @@ package com.just.stone.constant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Zac on 2016/8/1.
  */
 public class WhiteListConstant {
 
-    private static final String[] SYSTEM_LIST= new String []{
+    private static final String[] _SYSTEM_LIST= new String []{
         "com.android.backupconfirm",
         "com.cyanogenmod.filemanager",
         "com.android.providers.userdictionary",
@@ -110,18 +112,35 @@ public class WhiteListConstant {
         "com.android.pacprocessor",
         "com.android.terminal",
         "com.cyngn.discovery",
-        "com.android.settings"
+        "com.android.settings",
+        "com.android.packageinstaller",
+        "com.google.android.googlequicksearchbox",
+        "com.android.defcontainer",
+        "com.google.android.gms",
+        "com.android.deskclock",
     };
 
-    public static final String[] INPUT_METHOD_LIST = new String[]{
+    private static final String[] _INPUT_METHOD_LIST = new String[]{
         "com.baidu.input"
     };
 
-    public static final List<String> systemList(){
-        return Arrays.asList(SYSTEM_LIST);
-    }
+    private static final String[] _OS_LIST = new String []{
+        "com.airwatch.boxer.plugin.cyanogen.onenote",
+        "com.cyanogen.ambient.core",
+        "com.cyanogenmod.lockclock",
+        "com.boxer.email"
+    };
 
-    public static final List<String> inputMethodList(){
-        return Arrays.asList(INPUT_METHOD_LIST);
+    public static final List<String> SYSTEM_LIST = Arrays.asList(_SYSTEM_LIST);
+    public static final List<String> INPUT_METHOD_LIST = Arrays.asList(_INPUT_METHOD_LIST);
+    public static final List<String> OS_LIST = Arrays.asList(_OS_LIST);
+    public static final List<String> ALL = getAll();
+
+    private static List<String> getAll() {
+        Set all = new HashSet();
+        all.addAll(SYSTEM_LIST);
+        all.addAll(INPUT_METHOD_LIST);
+        all.addAll(OS_LIST);
+        return new ArrayList<>(all);
     }
 }
