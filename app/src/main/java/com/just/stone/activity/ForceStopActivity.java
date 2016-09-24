@@ -43,8 +43,8 @@ import de.greenrobot.event.EventBus;
  * Created by Zac on 2016/8/2.
  */
 public class ForceStopActivity extends Activity{
-    private static final long STOP_INTERVAL = 500;
-    private static final long PER_STOP_TIMEOUT = 5 * 1000;
+    private static final long STOP_INTERVAL = 600;
+    private static final long PER_STOP_TIMEOUT = 2 * 1000;
     private static final String TAG = "force-stop";
 
     List<String> mStopList;
@@ -218,6 +218,7 @@ public class ForceStopActivity extends Activity{
             LogUtil.d(TAG, "stop over runnalbe!");
             isOver.set(true);
             removeCover();
+            finishActivity(AppManagerUtil.REQUEST_CODE_FORCE_STOP);
             EventBus.getDefault().post(new OnAllStopped());
             finish();
         }

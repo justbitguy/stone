@@ -27,6 +27,9 @@
         </activity>
         <activity android:name=".activity.ForceStopActivity" />
         <activity android:name=".activity.ImageShowActivity" />
+        <activity android:name=".activity.AnimationActivity" />
+        <activity android:name=".activity.TestActivity"
+            android:launchMode="singleTask" />
 
         <service android:name=".service.StoneAccessibilityService"
             android:label="@string/accessibility_service_label"
