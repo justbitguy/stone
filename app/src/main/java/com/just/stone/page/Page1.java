@@ -9,6 +9,7 @@ import android.view.View;
 import com.just.stone.ApplicationEx;
 import com.just.stone.R;
 import com.just.stone.activity.AnimationActivity;
+import com.just.stone.activity.CustomViewActivity;
 import com.just.stone.activity.TestActivity;
 import com.just.stone.async.Async;
 import com.just.stone.broadcast.DeviceAdminSampleReceiver;
@@ -66,6 +67,14 @@ public class Page1 extends Page {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(mContext, TestActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
+        mView.findViewById(R.id.tv_activity_custom_view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(mContext, CustomViewActivity.class);
                 mContext.startActivity(intent);
             }
         });

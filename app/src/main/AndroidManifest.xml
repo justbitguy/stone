@@ -30,6 +30,7 @@
         <activity android:name=".activity.AnimationActivity" />
         <activity android:name=".activity.TestActivity"
             android:launchMode="singleTask" />
+        <activity android:name=".activity.CustomViewActivity"/>
 
         <service android:name=".service.StoneAccessibilityService"
             android:label="@string/accessibility_service_label"
