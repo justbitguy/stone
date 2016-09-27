@@ -6,11 +6,13 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.just.stone.R;
+import com.just.stone.util.LogUtil;
 
 /**
  * Created by zhangjinwei on 2016/9/18.
@@ -37,6 +39,50 @@ public class AnimationActivity extends Activity{
     }
 
     private void startAnimation(){
+        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.layout_center);
+        ViewGroup.LayoutParams layoutParams = relativeLayout.getLayoutParams();
+        LogUtil.d("layout", "" + relativeLayout.getLeft() + ", " + relativeLayout.getTop() + ", " + relativeLayout.getRight() + " , " + relativeLayout.getRight());
+        int centerX = relativeLayout.getLeft() + layoutParams.width / 2;
+        int centerY = relativeLayout.getTop() + layoutParams.height / 2;
+
+        ImageView image1 = (ImageView)findViewById(R.id.iv_app1);
+        LogUtil.d("layout", "" + image1.getX() + ", " + image1.getY());
+        ObjectAnimator anim1x = ObjectAnimator.ofFloat(image1, "x", image1.getX(), centerX - relativeLayout.getLeft() - image1.getWidth() / 2 );
+        ObjectAnimator anim1y = ObjectAnimator.ofFloat(image1, "y", image1.getY(), centerY - relativeLayout.getTop() - image1.getHeight() / 2);
+        AnimatorSet animatorSet1 = new AnimatorSet();
+        animatorSet1.play(anim1x).with(anim1y);
+        animatorSet1.setDuration(2000);
+        animatorSet1.start();
+
+        ImageView image2 = (ImageView)findViewById(R.id.iv_app_2);
+        LogUtil.d("layout", "" + image2.getX() + ", " + image2.getY());
+        ObjectAnimator anim2x = ObjectAnimator.ofFloat(image2, "x", image2.getX(), centerX - relativeLayout.getLeft() - image2.getWidth() / 2 );
+        ObjectAnimator anim2y = ObjectAnimator.ofFloat(image2, "y", image2.getY(), centerY - relativeLayout.getTop() - image2.getHeight() / 2);
+        AnimatorSet animatorSet2 = new AnimatorSet();
+        animatorSet2.play(anim2x).with(anim2y);
+        animatorSet2.setDuration(2000);
+        animatorSet2.start();
+
+        ImageView image3 = (ImageView)findViewById(R.id.iv_app_3);
+        LogUtil.d("layout", "" + image3.getX() + ", " + image3.getY());
+        ObjectAnimator anim3x = ObjectAnimator.ofFloat(image3, "x", image3.getX(), centerX - relativeLayout.getLeft() - image3.getWidth() / 2 );
+        ObjectAnimator anim3y = ObjectAnimator.ofFloat(image3, "y", image3.getY(), centerY - relativeLayout.getTop() - image3.getHeight() / 2);
+        AnimatorSet animatorSet3 = new AnimatorSet();
+        animatorSet3.play(anim3x).with(anim3y);
+        animatorSet3.setDuration(2000);
+        animatorSet3.start();
+
+        ImageView image4 = (ImageView)findViewById(R.id.iv_app_4);
+        LogUtil.d("layout", "" + image4.getX() + ", " + image4.getY());
+        ObjectAnimator anim4x = ObjectAnimator.ofFloat(image4, "x", image4.getX(), centerX - relativeLayout.getLeft() - image4.getWidth() / 2 );
+        ObjectAnimator anim4y = ObjectAnimator.ofFloat(image4, "y", image4.getY(), centerY - relativeLayout.getTop() - image4.getHeight() / 2);
+        AnimatorSet animatorSet4 = new AnimatorSet();
+        animatorSet4.play(anim4x).with(anim4y);
+        animatorSet4.setDuration(2000);
+        animatorSet4.start();
+    }
+
+    private void startAnimationOld(){
         mStartImage = (ImageView)findViewById(R.id.iv_start);
         float startHeight = mStartImage.getHeight();
         float startX = mStartImage.getX();
