@@ -16,6 +16,7 @@
     <string name="start_anim_activity">Animation Test</string>
     <string name="start_test_activity">Activity Test</string>
     <string name="start_custom_view">Custom View Activity</string>
+    <string name="start_app_signature">Application Signature</string>
 
     <string name="admin_receiver_status">Receiver Status: %s</string>
     <string name="admin_receiver_status_enabled">Admin Receiver Enabled</string>

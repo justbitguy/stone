@@ -4,15 +4,35 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.pm.PackageInfo;
+import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.just.stone.R;
+import com.just.stone.manager.InstalledPackageManager;
+import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
+import com.just.stone.util.ResourceUtil;
+import com.just.stone.view.ViewHolder;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by zhangjinwei on 2016/9/18.
@@ -21,6 +41,10 @@ import com.just.stone.util.LogUtil;
 public class AnimationActivity extends Activity{
     ImageView mStartImage;
     ImageView mEndImage;
+
+    List<Drawable> mAppIconList = new ArrayList();
+    GridView mGridView;
+    BaseAdapter mGridViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -33,9 +57,21 @@ public class AnimationActivity extends Activity{
         findViewById(R.id.tv_start_anim).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startAnimation();
+//                startAnimation();
+                startGridViewAnimation();
             }
         });
+
+        mGridView = (GridView)findViewById(R.id.gv_hz);
+        mGridViewAdapter = new MyAdapter();
+        mGridView.setAdapter(mGridViewAdapter);
+
+        List<PackageInfo> list = InstalledPackageManager.getInstance().getPackageInfoList();
+        for (int i = 0; i < 5; ++i){
+            PackageInfo info = list.get(i);
+            Drawable icon = AppManagerUtil.getPackageIcon(info.packageName);
+            mAppIconList.add(icon);
+        }
     }
 
     private void startAnimation(){
@@ -126,5 +162,43 @@ public class AnimationActivity extends Activity{
             }
         });
         animSet.start();
+    }
+
+    private void startGridViewAnimation(){
+        View view = mGridView.getChildAt(0);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "y", view.getY(), view.getY() - 200);
+        animator.setDuration(2000);
+        animator.start();
+    }
+
+    private class MyAdapter extends BaseAdapter {
+        private MyAdapter() {
+        }
+
+        @Override
+        public int getCount() {
+            return mAppIconList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mAppIconList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = AnimationActivity.this.getLayoutInflater().inflate(R.layout.layout_app_icon_item, null);
+            }
+
+            Drawable drawable = mAppIconList.get(position);
+            ViewHolder.<ImageView>get(convertView, R.id.iv_image).setImageDrawable(drawable);
+            return convertView;
+        }
     }
 }

@@ -58,11 +58,18 @@
             android:src="@drawable/ic_ok" />
     </RelativeLayout>
 
-
     <TextView
         android:id="@+id/tv_start_anim"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Animation"/>
+
+    <GridView
+        android:id="@+id/gv_hz"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:numColumns="5">
+
+    </GridView>
 </LinearLayout>
