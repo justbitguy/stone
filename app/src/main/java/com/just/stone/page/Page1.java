@@ -3,19 +3,24 @@ package com.just.stone.page;
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.database.Cursor;
+import android.net.Uri;
 import android.view.View;
 
 import com.just.stone.ApplicationEx;
 import com.just.stone.R;
 import com.just.stone.activity.AnimationActivity;
 import com.just.stone.activity.CustomViewActivity;
+import com.just.stone.activity.ScrollActivity;
 import com.just.stone.activity.TestActivity;
 import com.just.stone.async.Async;
 import com.just.stone.broadcast.DeviceAdminSampleReceiver;
+import com.just.stone.manager.CustomProvider;
 import com.just.stone.manager.InstalledPackageManager;
 import com.just.stone.manager.UploadManager;
 import com.just.stone.util.LogUtil;
@@ -98,6 +103,34 @@ public class Page1 extends Page {
                     }
                 } catch (Exception e){
 
+                }
+            }
+        });
+        mView.findViewById(R.id.tv_scroll_activity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ScrollActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
+        mView.findViewById(R.id.tv_scroll_activity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContentValues values = new ContentValues();
+                values.put(CustomProvider.name, "alpha");
+                Uri uri = mContext.getContentResolver().insert(CustomProvider.CONTENT_URI, values);
+                LogUtil.d("content", uri.toString());
+                String[] projection =
+                        {
+                                "id",
+                                "name"
+                        };
+
+                Cursor cursor = mContext.getContentResolver().query(CustomProvider.CONTENT_URI, projection, null, null, null);
+                if (cursor.moveToFirst()){
+                    String name = cursor.getString(cursor.getColumnIndex("name"));
+                    LogUtil.d("stone-content", "name: " + name);
                 }
             }
         });

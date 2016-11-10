@@ -21,7 +21,7 @@ public class MyCheck extends View {
 
     public MyCheck(Context context, AttributeSet attrs){
         super(context, attrs);
-        init(context, null);
+        init(context, attrs);
     }
 
     public void init(Context context, AttributeSet attrs){

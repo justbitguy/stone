@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Intent;
 
 import com.just.stone.service.LocalService;
+import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Created by Zac on 2016/8/1.
@@ -18,6 +19,13 @@ public class ApplicationEx extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+
         sInstance = this;
         startService();
     }

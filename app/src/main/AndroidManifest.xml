@@ -18,7 +18,7 @@
         android:largeHeap="true"
         android:persistent="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.StoneActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,6 +31,7 @@
         <activity android:name=".activity.TestActivity"
             android:launchMode="singleTask" />
         <activity android:name=".activity.CustomViewActivity"/>
+        <activity android:name=".activity.ScrollActivity"/>
 
         <service android:name=".service.StoneAccessibilityService"
             android:label="@string/accessibility_service_label"
@@ -81,6 +82,19 @@
             </intent-filter>
         </receiver>
         <!-- [END device_administration] -->
+
+        <receiver android:name=".broadcast.ChargingStatusReceiver">
+            <intent-filter>
+                <action android:name="com.lm.powersecurity.launch"/>
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name=".manager.CustomProvider"
+            android:authorities="com.stone.StoneContentProvider"
+            android:exported="true"
+            android:multiprocess="true" >
+        </provider>
     </application>
 
 </manifest>

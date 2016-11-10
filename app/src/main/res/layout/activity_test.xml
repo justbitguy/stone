@@ -3,9 +3,23 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 <TextView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
+    android:layout_width="300dp"
+    android:layout_height="100dp"
+    android:drawablePadding="100dp"
+    android:drawableBottom="@drawable/button_green"
     android:textSize="40dp"
+    android:background="@color/color_144E586A"
     android:text="Test Activity"/>
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:textSize="40dp"
+        android:background="@color/color_E04E586A"
+        android:text="Test Activity"/>
+
+    <EditText
+        android:id="@+id/et_test"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:background="@color/bluegrass"/>
 </LinearLayout>

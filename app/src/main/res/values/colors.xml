@@ -11,4 +11,17 @@
     <color name="bluegrass">#ff96c9b5</color>
     <color name="turquoise">#ff86b9b5</color>
     <color name="slate">#ff76a9b5</color>
+
+    <color name="color_B7FFFFFF">#B7FFFFFF</color>
+    <color name="color_FFB446">#FFB446</color>
+    <color name="color_144E586A">#144E586A</color>
+    <color name="color_E54646">#E54646</color>
+    <color name="color_0A65C8EF">#0A65C8EF</color>
+    <color name="color_E04E586A">#E04E586A</color>
+    <color name="color_E05B7CD6">#E05B7CD6</color>
+    <color name="color_3E4E586A">#3E4E586A</color>
+    <color name="color_E14E586A">#E14E586A</color>
+    <color name="color_FF22375F">#FF22375F</color>
+    <color name="color_FF081220">#FF081220</color>
+    <color name="color_14FFFFFF">#14FFFFFF</color>
 </resources>

@@ -65,4 +65,30 @@
             android:background="#00ff00"
             android:text="@string/start_app_signature"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_scroll_activity"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:background="#00ff00"
+            android:text="@string/start_scroll_activity"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_content_test"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:background="#00ff00"
+            android:text="@string/start_content_test"/>
+    </LinearLayout>
 </LinearLayout>

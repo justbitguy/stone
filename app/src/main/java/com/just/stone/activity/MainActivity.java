@@ -4,36 +4,26 @@ import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.ConsoleMessage;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
-
-import com.just.stone.ApplicationEx;
 import com.just.stone.R;
-import com.just.stone.async.Async;
 import com.just.stone.broadcast.DeviceAdminSampleReceiver;
-import com.just.stone.manager.UploadManager;
+import com.just.stone.manager.LeakTestManager;
 import com.just.stone.model.eventbus.OnNotifyService;
-import com.just.stone.page.Page;
 import com.just.stone.page.Page1;
 import com.just.stone.page.Page2;
 import com.just.stone.page.Page3;
-import com.just.stone.service.StoneAccessibilityService;
-import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
 
 import java.util.ArrayList;
@@ -41,7 +31,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class StoneActivity extends Activity {
+public class MainActivity extends Activity {
     List<View> viewList = new ArrayList<View>();
     List<String> titleList = new ArrayList<>();
     ViewPager mViewPager;
@@ -50,6 +40,8 @@ public class StoneActivity extends Activity {
     Page3 mPage3;
     DeviceAdminSampleReceiver mDeviceAdminSample;
 
+    Context mContext;
+
     private static final int REQUEST_CODE_ENABLE_ADMIN = 12021;
 
     @Override
@@ -57,6 +49,7 @@ public class StoneActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stone);
         init();
+        LeakTestManager.getInstance(this);
     }
 
     @Override
@@ -164,6 +157,7 @@ public class StoneActivity extends Activity {
         bindAction();
     }
 
+    static int i = 1, j = 1;
     private void bindAction(){
         findViewById(R.id.layout_top_tool_first).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,6 +167,11 @@ public class StoneActivity extends Activity {
                 LogUtil.d("version", "SDK_INT: " + Build.VERSION.SDK_INT);
 
                 // return false - don't update checkbox until we're really active
+                Intent intent = new Intent("com.lionmobi.battery.boost_chargine_status");
+                boolean hasCharging = i++ %2 == 0;
+                LogUtil.d("stone-charging", "hasCharngin: " + hasCharging);
+                intent.putExtra("boostChargingOpen", hasCharging);
+                sendBroadcast(intent);
             }
         });
 
@@ -186,7 +185,34 @@ public class StoneActivity extends Activity {
                 int width = metric.widthPixels;  // 宽度（PX）
                 int height = metric.heightPixels;  // 高度（PX）
                 LogUtil.d("screen", "width: " + width + ", height: " + height);
+                try {
+                    byte[] bytes = "012345".getBytes("UTF-8");
+                    for (byte b : bytes){
+                        LogUtil.d("bytes", "" + b);
+                    }
+                } catch (Exception e){
+                }
 
+//                ContentValues values = new ContentValues();
+//                values.put(StoneContentProvider.name, "alpha");
+//                Uri uri = getContentResolver().insert(StoneContentProvider.CONTENT_URI, values);
+//                LogUtil.d("content", uri.toString());
+//                String[] projection =
+//                        {
+//                                "id",
+//                                "name"
+//                        };
+//
+//                Cursor cursor = getContentResolver().query(StoneContentProvider.CONTENT_URI, projection, null, null, null);
+//                if (cursor.moveToFirst()){
+//                    String name = cursor.getString(cursor.getColumnIndex("name"));
+//                    LogUtil.d("stone-content", "name: " + name);
+//                }
+                Intent intent = new Intent("com.lionmobi.powerclean.boost_chargine_status");
+                boolean hasCharging = j++ % 2 == 0;
+                LogUtil.d("stone-charging", "hasCharngin: " + hasCharging);
+                intent.putExtra("boostChargingOpen", hasCharging);
+                sendBroadcast(intent);
             }
         });
     }

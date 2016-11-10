@@ -185,8 +185,6 @@ public class ResourceLoader {
         OkHttpClient okHttpClient = new OkHttpClient();
 
         OkHttpClient newClient = okHttpClient.newBuilder()
-                .addNetworkInterceptor(new CacheInterceptor(fromCache))
-                .cache(cache)
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
                 .build();
