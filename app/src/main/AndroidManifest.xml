@@ -32,6 +32,7 @@
             android:launchMode="singleTask" />
         <activity android:name=".activity.CustomViewActivity"/>
         <activity android:name=".activity.ScrollActivity"/>
+        <activity android:name=".activity.NotifyActivity"/>
 
         <service android:name=".service.StoneAccessibilityService"
             android:label="@string/accessibility_service_label"

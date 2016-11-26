@@ -1,21 +1,28 @@
 package com.just.stone.page;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
+import android.text.Html;
 import android.view.View;
+import android.widget.RemoteViews;
 
 import com.just.stone.ApplicationEx;
 import com.just.stone.R;
 import com.just.stone.activity.AnimationActivity;
 import com.just.stone.activity.CustomViewActivity;
+import com.just.stone.activity.NotifyActivity;
 import com.just.stone.activity.ScrollActivity;
 import com.just.stone.activity.TestActivity;
 import com.just.stone.async.Async;
@@ -23,10 +30,14 @@ import com.just.stone.broadcast.DeviceAdminSampleReceiver;
 import com.just.stone.manager.CustomProvider;
 import com.just.stone.manager.InstalledPackageManager;
 import com.just.stone.manager.UploadManager;
+import com.just.stone.model.eventbus.OnListenerCreated;
 import com.just.stone.util.LogUtil;
 import com.just.stone.util.Msg;
+import com.just.stone.util.ResourceUtil;
 
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by zhangjw on 2016/8/25.
@@ -47,6 +58,7 @@ public class Page1 extends Page {
     @Override
     protected void initData() {
         super.initData();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -134,8 +146,63 @@ public class Page1 extends Page {
                 }
             }
         });
+
+        mView.findViewById(R.id.tv_request_access_notify).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+            }
+        });
+
+        mView.findViewById(R.id.tv_test_notify_clone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, NotifyActivity.class));
+            }
+        });
+
+        mView.findViewById(R.id.tv_send_notify).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Async.schedule(5000, new Runnable() {
+                    @Override
+                    public void run() {
+                        sendNotification(2014, "hello1", "this is message 1", "ok");
+                        sendNotification(2015, "hello2", "this is message 2", "ok");
+                        sendNotification(2016, "hello3", "this is message 3", "ok");
+                        sendNotification(2017, "hello4", "this is message 4", "ok");
+                    }
+                });
+            }
+        });
     }
 
+    public void onEventMainThread(OnListenerCreated event){
+        mContext.startActivity(new Intent(mContext, NotifyActivity.class));
+    }
+
+    private void sendNotification(int id, String title, String content, String actionText){
+        Intent intent = new Intent(mContext, TestActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        RemoteViews remoteViews = new RemoteViews(ApplicationEx.getInstance().getPackageName(), R.layout.layout_notify_common_two_line);
+        remoteViews.setImageViewResource(R.id.iv_icon, R.drawable.ic_ok);
+        remoteViews.setTextViewText(R.id.tv_title, title);
+        remoteViews.setTextColor(R.id.tv_title, ResourceUtil.getColor(R.color.color_E04E586A));
+
+        remoteViews.setTextViewText(R.id.tv_content, content);
+        remoteViews.setInt(R.id.tv_action, "setBackgroundResource", R.drawable.btn_red_selector_round100dp);
+        remoteViews.setTextViewText(R.id.tv_action, actionText);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext)
+                .setSmallIcon(R.drawable.ic_checkbox_off)
+                .setAutoCancel(true)
+                .setContent(remoteViews)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager mNotifyCenter = (NotificationManager) ApplicationEx.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotifyCenter.notify(id, builder.build());
+    }
     @Override
     public void onResume() {
         super.onResume();
