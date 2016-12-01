@@ -36,4 +36,6 @@
     <string name="notify_boost_title">Background apps lower speed</string>
     <string name="notify_boost_content">&lt;font color=&quot;#E54646&quot;&gt;%1$s&lt;/font&gt; app(s) can be kill to boost</string>
     <string name="boost_do_boost">Boost</string>
+
+    <string name="system_activity_404_tips">Sorry, we can\'t find right setting options in your device, we will try to fix it.</string>
 </resources>

@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -171,7 +172,7 @@ public class Page1 extends Page {
                         sendNotification(2014, "hello1", "this is message 1", "ok");
                         sendNotification(2015, "hello2", "this is message 2", "ok");
                         sendNotification(2016, "hello3", "this is message 3", "ok");
-                        sendNotification(2017, "hello4", "this is message 4", "ok");
+                        sendNotification(2017, "hello4", "", "");
                     }
                 });
             }
@@ -190,7 +191,9 @@ public class Page1 extends Page {
         remoteViews.setTextViewText(R.id.tv_title, title);
         remoteViews.setTextColor(R.id.tv_title, ResourceUtil.getColor(R.color.color_E04E586A));
 
-        remoteViews.setTextViewText(R.id.tv_content, content);
+        if (!TextUtils.isEmpty(content)) {
+            remoteViews.setTextViewText(R.id.tv_content, content);
+        }
         remoteViews.setInt(R.id.tv_action, "setBackgroundResource", R.drawable.btn_red_selector_round100dp);
         remoteViews.setTextViewText(R.id.tv_action, actionText);
 

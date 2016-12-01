@@ -164,10 +164,10 @@ public class Page2 extends Page{
         }
 
         @Override
-        public View getView (int position, View convertView, ViewGroup parent){
-            if (convertView == null){
-                convertView = mContext.getLayoutInflater().inflate(R.layout.layout_app_item, null);
-                ViewHolder.<CheckBox>get(convertView, R.id.app_item_check).setOnClickListener(new View.OnClickListener() {
+        public View getView (int position, View contentView, ViewGroup parent){
+            if (contentView == null){
+                contentView = mContext.getLayoutInflater().inflate(R.layout.layout_app_item, null);
+                ViewHolder.<CheckBox>get(contentView, R.id.app_item_check).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         LogUtil.d("item", "click: " + (int)v.getTag());
@@ -178,13 +178,21 @@ public class Page2 extends Page{
                     }
                 });
                 // set onclicklistener
+                ViewHolder.<LinearLayout>get(contentView, R.id.linear_layout_app_item).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        StopAppInfo item = (StopAppInfo)getItem((int)v.getTag());
+                        AppManagerUtil.showInstalledAppDetails(item.packageName);
+                    }
+                });
             }
 
             final StopAppInfo itemData = (StopAppInfo) getItem(position);
-            ViewHolder.<ImageView>get(convertView, R.id.app_item_icon).setImageDrawable(AppManagerUtil.getPackageIcon(itemData.packageName));
-            ViewHolder.<TextView>get(convertView, R.id.app_item_name).setText(itemData.name);
-            ViewHolder.<CheckBox>get(convertView, R.id.app_item_check).setTag(position);
-            return convertView;
+            ViewHolder.<ImageView>get(contentView, R.id.app_item_icon).setImageDrawable(AppManagerUtil.getPackageIcon(itemData.packageName));
+            ViewHolder.<TextView>get(contentView, R.id.app_item_name).setText(itemData.name);
+            ViewHolder.<CheckBox>get(contentView, R.id.app_item_check).setTag(position);
+            ViewHolder.<LinearLayout>get(contentView, R.id.linear_layout_app_item).setTag(position);
+            return contentView;
         }
     }
 }

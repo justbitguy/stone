@@ -54,6 +54,7 @@ public class ForceStopActivity extends Activity{
     private final Object mCoverLock = new Object();
     private AtomicBoolean isCovered = new AtomicBoolean(false);
     private AtomicBoolean isOver = new AtomicBoolean(false);
+    private boolean forceStopped = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -173,8 +174,13 @@ public class ForceStopActivity extends Activity{
         forceStopNext();
     }
 
+    @Override
+    public void onBackPressed(){
+        forceStopped = true;
+    }
+
     private void forceStopNext(){
-        if (mStopList.size() == 0) {
+        if (mStopList.size() == 0 || forceStopped) {
             LogUtil.d(TAG, "stopList.size == 0");
             this.finishActivity(AppManagerUtil.REQUEST_CODE_FORCE_STOP);
             Async.scheduleTaskOnUiThread(1000, mAllOverTask);

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.just.stone.ApplicationEx;
 import com.just.stone.R;
@@ -154,5 +155,30 @@ public class AppManagerUtil {
             return true;
         }
         return isSys;
+    }
+
+    public static void showInstalledAppDetails(String packageName) {
+        try {
+            Intent intent = new Intent();
+            final int apiLevel = Build.VERSION.SDK_INT;
+            if (apiLevel >= 9) { // 2.3（ApiLevel 9）以上，使用SDK提供的接口
+                intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+                Uri uri = Uri.fromParts("package", packageName, null);
+                intent.setData(uri);
+            } else { // 2.3以下，使用非公开的接口（查看InstalledAppDetails源码）
+                // 2.2和2.1中，InstalledAppDetails使用的APP_PKG_NAME不同。
+                final String appPkgName = (apiLevel == 8 ? APP_PKG_NAME_22
+                        : APP_PKG_NAME_21);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setClassName(APP_DETAILS_PACKAGE_NAME,
+                        APP_DETAILS_CLASS_NAME);
+                intent.putExtra(appPkgName, packageName);
+            }
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ApplicationEx.getInstance().startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(ApplicationEx.getInstance(), ApplicationEx.getInstance().getString(R.string.system_activity_404_tips), Toast.LENGTH_SHORT).show();
+        }
     }
 }
