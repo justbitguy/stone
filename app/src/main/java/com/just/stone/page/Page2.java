@@ -68,7 +68,8 @@ public class Page2 extends Page{
         for (String pkgName : installedApps){
             if (AppManagerUtil.isPackageStopped(pkgName)
                     || WhiteListConstant.ALL.contains(pkgName)
-                    || pkgName.equals(mContext.getPackageName())){
+                    || pkgName.equals(mContext.getPackageName())
+                    || AppManagerUtil.isSystemApp(pkgName) ){
                 continue;
             }
             addToAppList(pkgName);

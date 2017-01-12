@@ -6,11 +6,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import com.just.stone.manager.ForceStopManager;
+import com.just.stone.model.eventbus.OnFontSizeChanged;
 import com.just.stone.model.eventbus.OnNotifyService;
 import com.just.stone.model.eventbus.OnStartForceStop;
 import com.just.stone.util.LogUtil;
@@ -65,5 +69,12 @@ public class LocalService extends Service {
 
     public void onEventAsync(OnStartForceStop event){
         ForceStopManager.getInstance(this).start(event.appList);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+        EventBus.getDefault().post(new OnFontSizeChanged());
+        LogUtil.d("font-size", "onConfigurationChanged");
     }
 }

@@ -15,6 +15,7 @@ import android.net.LinkAddress;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -172,6 +173,19 @@ public class ForceStopActivity extends Activity{
         addCover();
         Async.schedule(STOP_INTERVAL * 4 *  mStopList.size(), mAllTimeout);
         forceStopNext();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_HOME){
+            forceStopped = true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

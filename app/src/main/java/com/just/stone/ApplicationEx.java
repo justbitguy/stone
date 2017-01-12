@@ -41,4 +41,5 @@ public class ApplicationEx extends Application {
         Intent intent = new Intent(this.getApplicationContext(), LocalService.class);
         startService(intent);
     }
+
 }

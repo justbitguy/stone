@@ -171,7 +171,7 @@ public class Page1 extends Page {
                     public void run() {
                         sendNotification(2014, "hello1", "this is message 1", "ok");
                         sendNotification(2015, "hello2", "this is message 2", "ok");
-                        sendNotification(2016, "hello3", "this is message 3", "ok");
+                        sendNotification(2016, "START", "START MAIN", "ok");
                         sendNotification(2017, "hello4", "", "");
                     }
                 });
@@ -185,6 +185,9 @@ public class Page1 extends Page {
 
     private void sendNotification(int id, String title, String content, String actionText){
         Intent intent = new Intent(mContext, TestActivity.class);
+        if (id == 2016){
+            intent = mContext.getPackageManager().getLaunchIntentForPackage("com.lm.powersecurity");
+        }
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
         RemoteViews remoteViews = new RemoteViews(ApplicationEx.getInstance().getPackageName(), R.layout.layout_notify_common_two_line);
         remoteViews.setImageViewResource(R.id.iv_icon, R.drawable.ic_ok);

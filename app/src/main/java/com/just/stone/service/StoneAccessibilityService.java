@@ -1,4 +1,4 @@
-package com.just.stone.service;
+ package com.just.stone.service;
 
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;

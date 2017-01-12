@@ -54,6 +54,10 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name="com.just.stone.service.LocalService"
+            android:configChanges="fontScale" />
+
         <!-- [START firebase_service] -->
         <service
             android:name=".service.MyFirebaseMessagingService">

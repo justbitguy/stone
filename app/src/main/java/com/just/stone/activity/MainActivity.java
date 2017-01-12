@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -15,11 +16,13 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.MonthDisplayHelper;
 import android.view.View;
 import android.view.ViewGroup;
 import com.just.stone.R;
 import com.just.stone.broadcast.DeviceAdminSampleReceiver;
 import com.just.stone.manager.LeakTestManager;
+import com.just.stone.model.eventbus.OnFontSizeChanged;
 import com.just.stone.model.eventbus.OnNotifyService;
 import com.just.stone.page.Page1;
 import com.just.stone.page.Page2;
@@ -49,7 +52,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stone);
         init();
-        LeakTestManager.getInstance(this);
+//        LeakTestManager.getInstance(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -61,6 +65,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void init(){
@@ -117,6 +122,7 @@ public class MainActivity extends Activity {
                         findViewById(R.id.layout_bottom_tool_first_image).setBackgroundColor(getResources().getColor(R.color.colorAccent));
                         findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.white));
                         findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.white));
+                        mPage1.onPageSelected();
                         break;
                     case 1:
                         findViewById(R.id.layout_bottom_tool_first_image).setBackgroundColor(getResources().getColor(R.color.white));
@@ -215,5 +221,16 @@ public class MainActivity extends Activity {
                 sendBroadcast(intent);
             }
         });
+    }
+
+    public void onEventMainThread(OnFontSizeChanged event){
+        Configuration configuration = getResources().getConfiguration();
+        LogUtil.d("font-size", configuration.fontScale + "");
+        configuration.fontScale=(float) 0.75; //0.85 small size, 1 normal size, 1,15 big etc
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        metrics.scaledDensity = configuration.fontScale * metrics.density;
+        getBaseContext().getResources().updateConfiguration(configuration, metrics);
     }
 }

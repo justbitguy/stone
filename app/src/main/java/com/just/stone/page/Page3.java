@@ -2,6 +2,10 @@ package com.just.stone.page;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.TextUtils;
+import android.text.style.ParagraphStyle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,8 +19,13 @@ import com.just.stone.activity.ImageShowActivity;
 import com.just.stone.async.Async;
 import com.just.stone.manager.ImageDownload;
 import com.just.stone.manager.UploadManager;
+import com.just.stone.model.pojo.MyParcelable;
 import com.just.stone.util.LogUtil;
 import com.just.stone.util.Msg;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Zac on 2016/8/16.
@@ -75,6 +84,16 @@ public class Page3 extends Page{
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ImageShowActivity.class);
                 mContext.startActivity(intent);
+            }
+        });
+
+        mView.findViewById(R.id.tv_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List list = new ArrayList(Arrays.asList(new String[]{"a", "b"}));
+                if (list.get(2) == null){
+                    LogUtil.d("test", "error get null");
+                }
             }
         });
     }
