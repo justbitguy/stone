@@ -32,6 +32,7 @@ import com.just.stone.manager.CustomProvider;
 import com.just.stone.manager.InstalledPackageManager;
 import com.just.stone.manager.UploadManager;
 import com.just.stone.model.eventbus.OnListenerCreated;
+import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
 import com.just.stone.util.Msg;
 import com.just.stone.util.ResourceUtil;
@@ -76,6 +77,13 @@ public class Page1 extends Page {
                 intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
                         "extra string");
                 mContext.startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
+            }
+        });
+
+        mView.findViewById(R.id.tv_ps_detail).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                AppManagerUtil.showInstalledAppDetails("com.lm.powersecurity");
             }
         });
 

@@ -2,6 +2,7 @@ package com.just.stone.page;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -90,12 +91,57 @@ public class Page3 extends Page{
         mView.findViewById(R.id.tv_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List list = new ArrayList(Arrays.asList(new String[]{"a", "b"}));
-                if (list.get(2) == null){
-                    LogUtil.d("test", "error get null");
-                }
+//                int out = tryTest();
+//                LogUtil.d("try-test", "out = " + out);
+                forTest();
             }
         });
+    }
+
+    private void makeCrash(){
+        throw new NullPointerException();
+    }
+
+    private void forTest() {
+        for (String a : getList()) {
+            LogUtil.d("for-test", "str: " + a);
+        }
+    }
+
+    private List<String> getList() {
+        LogUtil.d("for-test", "get-list");
+        return new ArrayList<>(Arrays.asList(new String[]{"helli", "world"}));
+    }
+
+    private int tryTest(){
+        int out = 0;
+        try{
+            String a = null;
+            LogUtil.d("try-test", "" + a.length());
+            return out;
+        } catch (Exception e) {
+
+        } finally {
+            LogUtil.d("try-test", "finally 1");
+            out = 1;
+        }
+
+        try{
+            //String b = null;
+            out = 2;
+            LogUtil.d("try-test", "return: " + out);
+            return out;
+            //return out;
+        } catch (Exception e) {
+
+        } finally {
+            out = 3;
+            LogUtil.d("try-test", "finally 2, out: " + out);
+        }
+
+        LogUtil.d("try-test", "before return.");
+        out = 4;
+        return out;
     }
 
     @Override

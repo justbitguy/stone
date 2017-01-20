@@ -191,6 +191,7 @@ public class Page2 extends Page{
             final StopAppInfo itemData = (StopAppInfo) getItem(position);
             ViewHolder.<ImageView>get(contentView, R.id.app_item_icon).setImageDrawable(AppManagerUtil.getPackageIcon(itemData.packageName));
             ViewHolder.<TextView>get(contentView, R.id.app_item_name).setText(itemData.name);
+            ViewHolder.<TextView>get(contentView, R.id.app_package_name).setText(itemData.packageName);
             ViewHolder.<CheckBox>get(contentView, R.id.app_item_check).setTag(position);
             ViewHolder.<LinearLayout>get(contentView, R.id.linear_layout_app_item).setTag(position);
             return contentView;

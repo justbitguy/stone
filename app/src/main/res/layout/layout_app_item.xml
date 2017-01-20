@@ -41,6 +41,10 @@
                 android:fontFamily="Roboto-Regular"
                 android:textColor="#FF575757"
                 android:textSize="14dp" />
+            <TextView
+                android:id="@+id/app_package_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <CheckBox
