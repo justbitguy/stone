@@ -19,7 +19,10 @@ import android.util.DisplayMetrics;
 import android.util.MonthDisplayHelper;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
 import com.just.stone.R;
+import com.just.stone.async.Async;
 import com.just.stone.broadcast.DeviceAdminSampleReceiver;
 import com.just.stone.manager.LeakTestManager;
 import com.just.stone.model.eventbus.OnFontSizeChanged;
@@ -34,7 +37,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener{
     List<View> viewList = new ArrayList<View>();
     List<String> titleList = new ArrayList<>();
     ViewPager mViewPager;
@@ -108,7 +111,6 @@ public class MainActivity extends Activity {
             }
         };
         mViewPager.setAdapter(mPagerAdapter);
-
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -117,26 +119,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onPageSelected(int position) {
-                switch(position) {
-                    case 0:
-                        findViewById(R.id.layout_bottom_tool_first_image).setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.white));
-                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.white));
-                        mPage1.onPageSelected();
-                        break;
-                    case 1:
-                        findViewById(R.id.layout_bottom_tool_first_image).setBackgroundColor(getResources().getColor(R.color.white));
-                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.white));
-                        mPage2.onPageSelected();
-                        break;
-                    case 2:
-                        findViewById(R.id.layout_bottom_tool_first_image).setBackgroundColor(getResources().getColor(R.color.white));
-                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.white));
-                        findViewById(R.id.layout_bottom_tool_second_image).setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                        mPage3.onPageSelected();
-                        break;
-                }
+                pageSelected(position);
             }
 
             @Override
@@ -161,66 +144,58 @@ public class MainActivity extends Activity {
         findViewById(R.id.layout_bottom_tool_first_text).setSelected(true);
         mPagerAdapter.notifyDataSetChanged();
         bindAction();
+        pageSelected(mViewPager.getCurrentItem());
     }
 
     static int i = 1, j = 1;
     private void bindAction(){
-        findViewById(R.id.layout_top_tool_first).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogUtil.d("version", "relase:" + Build.VERSION.RELEASE);
-                LogUtil.d("version", "patch: " + Build.VERSION.SECURITY_PATCH);
-                LogUtil.d("version", "SDK_INT: " + Build.VERSION.SDK_INT);
+        findViewById(R.id.layout_bottom_tool_first).setOnClickListener(this);
+        findViewById(R.id.layout_bottom_tool_second).setOnClickListener(this);
+        findViewById(R.id.layout_bottom_tool_third).setOnClickListener(this);
+    }
 
-                // return false - don't update checkbox until we're really active
-                Intent intent = new Intent("com.lionmobi.battery.boost_chargine_status");
-                boolean hasCharging = i++ %2 == 0;
-                LogUtil.d("stone-charging", "hasCharngin: " + hasCharging);
-                intent.putExtra("boostChargingOpen", hasCharging);
-                sendBroadcast(intent);
-            }
-        });
+    private void pageSelected(int position) {
+        switch(position) {
+            case 0:
+                ((ImageView)findViewById(R.id.layout_bottom_tool_first_image)).setImageResource(R.drawable.button_green);
+                ((ImageView)findViewById(R.id.layout_bottom_tool_second_image)).setImageResource(R.drawable.button);
+                ((ImageView)findViewById(R.id.layout_bottom_tool_third_image)).setImageResource(R.drawable.button);
+                mPage1.onPageSelected();
+                break;
+            case 1:
+                ((ImageView)findViewById(R.id.layout_bottom_tool_first_image)).setImageResource(R.drawable.button);
+                ((ImageView)findViewById(R.id.layout_bottom_tool_second_image)).setImageResource(R.drawable.button_green);
+                ((ImageView)findViewById(R.id.layout_bottom_tool_third_image)).setImageResource(R.drawable.button);
+                mPage2.onPageSelected();
+                break;
+            case 2:
+                ((ImageView)findViewById(R.id.layout_bottom_tool_first_image)).setImageResource(R.drawable.button);
+                ((ImageView)findViewById(R.id.layout_bottom_tool_second_image)).setImageResource(R.drawable.button);
+                ((ImageView)findViewById(R.id.layout_bottom_tool_third_image)).setImageResource(R.drawable.button_green);
+                mPage3.onPageSelected();
+                break;
+        }
+    }
 
-        findViewById(R.id.layout_top_tool_third).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new OnNotifyService());
-                DisplayMetrics metric = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(metric);
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.layout_bottom_tool_first:
+                switch2Page(0);
+                break;
+            case R.id.layout_bottom_tool_second:
+                switch2Page(1);
+                break;
+            case R.id.layout_bottom_tool_third:
+                switch2Page(2);
+                break;
+            default:
+                break;
+        }
+    }
 
-                int width = metric.widthPixels;  // 宽度（PX）
-                int height = metric.heightPixels;  // 高度（PX）
-                LogUtil.d("screen", "width: " + width + ", height: " + height);
-                try {
-                    byte[] bytes = "012345".getBytes("UTF-8");
-                    for (byte b : bytes){
-                        LogUtil.d("bytes", "" + b);
-                    }
-                } catch (Exception e){
-                }
-
-//                ContentValues values = new ContentValues();
-//                values.put(StoneContentProvider.name, "alpha");
-//                Uri uri = getContentResolver().insert(StoneContentProvider.CONTENT_URI, values);
-//                LogUtil.d("content", uri.toString());
-//                String[] projection =
-//                        {
-//                                "id",
-//                                "name"
-//                        };
-//
-//                Cursor cursor = getContentResolver().query(StoneContentProvider.CONTENT_URI, projection, null, null, null);
-//                if (cursor.moveToFirst()){
-//                    String name = cursor.getString(cursor.getColumnIndex("name"));
-//                    LogUtil.d("stone-content", "name: " + name);
-//                }
-                Intent intent = new Intent("com.lionmobi.powerclean.boost_chargine_status");
-                boolean hasCharging = j++ % 2 == 0;
-                LogUtil.d("stone-charging", "hasCharngin: " + hasCharging);
-                intent.putExtra("boostChargingOpen", hasCharging);
-                sendBroadcast(intent);
-            }
-        });
+    private void switch2Page(int position) {
+        mViewPager.setCurrentItem(position);
     }
 
     public void onEventMainThread(OnFontSizeChanged event){

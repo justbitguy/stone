@@ -21,6 +21,7 @@ import com.just.stone.async.Async;
 import com.just.stone.manager.ImageDownload;
 import com.just.stone.manager.UploadManager;
 import com.just.stone.model.pojo.MyParcelable;
+import com.just.stone.test.TestManager;
 import com.just.stone.util.LogUtil;
 import com.just.stone.util.Msg;
 
@@ -91,58 +92,11 @@ public class Page3 extends Page{
         mView.findViewById(R.id.tv_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                int out = tryTest();
-//                LogUtil.d("try-test", "out = " + out);
-                forTest();
+                TestManager.startTest();
             }
         });
     }
 
-    private void makeCrash(){
-        throw new NullPointerException();
-    }
-
-    private void forTest() {
-        for (String a : getList()) {
-            LogUtil.d("for-test", "str: " + a);
-        }
-    }
-
-    private List<String> getList() {
-        LogUtil.d("for-test", "get-list");
-        return new ArrayList<>(Arrays.asList(new String[]{"helli", "world"}));
-    }
-
-    private int tryTest(){
-        int out = 0;
-        try{
-            String a = null;
-            LogUtil.d("try-test", "" + a.length());
-            return out;
-        } catch (Exception e) {
-
-        } finally {
-            LogUtil.d("try-test", "finally 1");
-            out = 1;
-        }
-
-        try{
-            //String b = null;
-            out = 2;
-            LogUtil.d("try-test", "return: " + out);
-            return out;
-            //return out;
-        } catch (Exception e) {
-
-        } finally {
-            out = 3;
-            LogUtil.d("try-test", "finally 2, out: " + out);
-        }
-
-        LogUtil.d("try-test", "before return.");
-        out = 4;
-        return out;
-    }
 
     @Override
     public void onResume(){
