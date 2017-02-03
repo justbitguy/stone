@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
@@ -9,148 +11,72 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_device_admin_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:background="#00ff00"
-                    android:text="@string/device_admin_button"/>
-            </LinearLayout>
 
-            <LinearLayout
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_device_admin_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_send_notify"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:background="#00ff00"
-                    android:text="@string/start_test_send_notify"/>
-            </LinearLayout>
+                android:layout_height="48dp"
+                custom:text="@string/device_admin_button" />
 
-            <LinearLayout
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_send_notify"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_ps_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:background="#00ff00"
-                    android:text="@string/start_power_security_detail"/>
-            </LinearLayout>
+                android:layout_height="48dp"
+                custom:text="@string/start_test_send_notify" />
 
-            <LinearLayout
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_ps_detail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_anim_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:background="#00ff00"
-                    android:text="@string/start_anim_activity"/>
-            </LinearLayout>
+                android:layout_height="48dp"
+                custom:text="@string/start_power_security_detail" />
 
-            <LinearLayout
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_anim_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_activity_test"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:background="#00ff00"
-                    android:text="@string/start_test_activity"/>
-            </LinearLayout>
+                android:layout_height="48dp"
+                custom:text="@string/start_anim_activity" />
 
-            <LinearLayout
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_activity_test"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_activity_custom_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:background="#00ff00"
-                    android:text="@string/start_custom_view"/>
-            </LinearLayout>
+                android:layout_height="48dp"
+                custom:text="@string/start_test_activity" />
 
-            <LinearLayout
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_activity_custom_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_app_signature"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:background="#00ff00"
-                    android:text="@string/start_app_signature"/>
-            </LinearLayout>
+                android:layout_height="48dp"
+                custom:text="@string/start_custom_view" />
 
-            <LinearLayout
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_app_signature"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_scroll_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:background="#00ff00"
-                    android:text="@string/start_scroll_activity"/>
-            </LinearLayout>
+                android:layout_height="48dp"
+                custom:text="@string/start_app_signature" />
 
-            <LinearLayout
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_scroll_activity"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_content_test"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:background="#00ff00"
-                    android:text="@string/start_content_test"/>
-            </LinearLayout>
+                android:layout_height="48dp"
+                custom:text="@string/start_scroll_activity" />
 
-            <LinearLayout
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_content_test"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_request_access_notify"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:background="#00ff00"
-                    android:text="@string/start_access_notify_setting"/>
-            </LinearLayout>
+                android:layout_height="48dp"
+                custom:text="@string/start_content_test" />
 
-            <LinearLayout
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_request_access_notify"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_test_notify_clone"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:background="#00ff00"
-                    android:text="@string/start_test_notify_clone"/>
-            </LinearLayout>
+                android:layout_height="48dp"
+                custom:text="@string/start_access_notify_setting" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_test_notify_clone"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/start_test_notify_clone" />
         </LinearLayout>
 
     </ScrollView>

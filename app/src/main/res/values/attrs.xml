@@ -33,4 +33,8 @@
     <declare-styleable name="MyCheck">
         <attr name="isChecked" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="ItemView">
+        <attr name="text" format="string"/>
+    </declare-styleable>
 </resources>
