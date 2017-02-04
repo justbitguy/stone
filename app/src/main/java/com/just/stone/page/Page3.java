@@ -51,43 +51,43 @@ public class Page3 extends Page{
     @Override
     protected void initView(){
         super.initView();
-        mView.findViewById(R.id.tv_upload).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogUtil.d("upload", "start upload!");
-                Msg.show(mView, "start upload!");
-                Async.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            UploadManager.upLoadByCommonPost();
-                        } catch (Exception e){
-                            LogUtil.error(e);
-                        }
-                    }
-                });
-            }
-        });
-
-        mView.findViewById(R.id.tv_download).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Async.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        ImageDownload.download();
-                    }
-                });
-            }
-        });
-
-        mView.findViewById(R.id.tv_pick).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ImageShowActivity.class);
-                mContext.startActivity(intent);
-            }
-        });
+//        mView.findViewById(R.id.tv_upload).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                LogUtil.d("upload", "start upload!");
+//                Msg.show(mView, "start upload!");
+//                Async.run(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try{
+//                            UploadManager.upLoadByCommonPost();
+//                        } catch (Exception e){
+//                            LogUtil.error(e);
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//
+//        mView.findViewById(R.id.tv_download).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Async.run(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ImageDownload.download();
+//                    }
+//                });
+//            }
+//        });
+//
+//        mView.findViewById(R.id.tv_pick).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(mContext, ImageShowActivity.class);
+//                mContext.startActivity(intent);
+//            }
+//        });
 
         mView.findViewById(R.id.tv_test).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -23,6 +23,10 @@
     <string name="start_test_notify_clone">Notify display</string>
     <string name="start_test_send_notify">Send Notify</string>
     <string name="start_power_security_detail">Power Security</string>
+    <string name="text_upload_image">Upload Image</string>
+    <string name="text_download_image">Download Image</string>
+    <string name="text_pick_image">Pick Image</string>
+    <string name="text_start_test">Start Test</string>
 
     <string name="admin_receiver_status">Receiver Status: %s</string>
     <string name="admin_receiver_status_enabled">Admin Receiver Enabled</string>

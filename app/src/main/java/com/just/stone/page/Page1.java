@@ -23,12 +23,14 @@ import com.just.stone.ApplicationEx;
 import com.just.stone.R;
 import com.just.stone.activity.AnimationActivity;
 import com.just.stone.activity.CustomViewActivity;
+import com.just.stone.activity.ImageShowActivity;
 import com.just.stone.activity.NotifyActivity;
 import com.just.stone.activity.ScrollActivity;
 import com.just.stone.activity.TestActivity;
 import com.just.stone.async.Async;
 import com.just.stone.broadcast.DeviceAdminSampleReceiver;
 import com.just.stone.manager.CustomProvider;
+import com.just.stone.manager.ImageDownload;
 import com.just.stone.manager.InstalledPackageManager;
 import com.just.stone.manager.UploadManager;
 import com.just.stone.model.eventbus.OnListenerCreated;
@@ -183,6 +185,44 @@ public class Page1 extends Page {
                         sendNotification(2017, "hello4", "", "");
                     }
                 });
+            }
+        });
+
+        mView.findViewById(R.id.tv_upload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogUtil.d("upload", "start upload!");
+                Msg.show(mView, "start upload!");
+                Async.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            UploadManager.upLoadByCommonPost();
+                        } catch (Exception e){
+                            LogUtil.error(e);
+                        }
+                    }
+                });
+            }
+        });
+
+        mView.findViewById(R.id.tv_download).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Async.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        ImageDownload.download();
+                    }
+                });
+            }
+        });
+
+        mView.findViewById(R.id.tv_pick).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ImageShowActivity.class);
+                mContext.startActivity(intent);
             }
         });
     }

@@ -77,6 +77,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 custom:text="@string/start_test_notify_clone" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_upload"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_upload_image" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_download"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_download_image" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_pick"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_pick_image" />
         </LinearLayout>
 
     </ScrollView>

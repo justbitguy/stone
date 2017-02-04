@@ -1,77 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/tv_upload"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:layout_marginRight="2dp"
-            android:gravity="center"
-            android:background="@android:color/holo_blue_bright"
-            android:text="upload"/>
-    </LinearLayout>
 
-    <LinearLayout
+    <com.just.stone.view.ItemView
+        android:id="@+id/tv_test"
         android:layout_width="match_parent"
-        android:layout_marginTop="4dp"
-        android:layout_height="50dp">
-        <TextView
-            android:id="@+id/tv_download"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:layout_marginLeft="2dp"
-            android:gravity="center"
-            android:background="@android:color/holo_blue_bright"
-            android:text="download"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="4dp"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/tv_pick"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:background="@android:color/holo_blue_bright"
-            android:text="pick"/>
-    </LinearLayout>
+        android:layout_height="48dp"
+        custom:text="@string/text_start_test" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_output"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="4dp"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/tv_test"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:background="@android:color/holo_blue_light"
-            android:text="Test Anything"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/tv_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:textSize="12dp"
-            android:textColor="@android:color/black"/>
-    </LinearLayout>
-
+        android:layout_height="match_parent"
+        android:background="@color/white"/>
 </LinearLayout>
