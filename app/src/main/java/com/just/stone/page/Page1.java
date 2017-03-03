@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
@@ -20,20 +21,24 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.just.stone.ApplicationEx;
+import com.just.stone.Manifest;
 import com.just.stone.R;
 import com.just.stone.activity.AnimationActivity;
 import com.just.stone.activity.CustomViewActivity;
 import com.just.stone.activity.ImageShowActivity;
 import com.just.stone.activity.NotifyActivity;
+import com.just.stone.activity.PermissionTestActivity;
 import com.just.stone.activity.ScrollActivity;
 import com.just.stone.activity.TestActivity;
 import com.just.stone.async.Async;
 import com.just.stone.broadcast.DeviceAdminSampleReceiver;
+import com.just.stone.manager.AlarmTestManager;
 import com.just.stone.manager.CustomProvider;
 import com.just.stone.manager.ImageDownload;
 import com.just.stone.manager.InstalledPackageManager;
 import com.just.stone.manager.UploadManager;
 import com.just.stone.model.eventbus.OnListenerCreated;
+import com.just.stone.service.ForegroundService;
 import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
 import com.just.stone.util.Msg;
@@ -48,7 +53,7 @@ import de.greenrobot.event.EventBus;
  */
 
 public class Page1 extends Page {
-    private static final int REQUEST_CODE_ENABLE_ADMIN = 12301;
+    private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
 
     public Page1(Activity context, int mViewId) {
         super(context, mViewId);
@@ -65,6 +70,16 @@ public class Page1 extends Page {
         EventBus.getDefault().register(this);
     }
 
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        if (requestCode == PERMISSION_REQUEST_CODE && hasAllPermissionsGranted(grantResults)) {
+//            isRequireCheck = true;
+//            allPermissionsGranted();
+//        } else {
+//            isRequireCheck = false;
+//            showMissingPermissionDialog();
+//        }
+//    }
     @Override
     protected void initView() {
         super.initView();
@@ -86,6 +101,21 @@ public class Page1 extends Page {
             @Override
             public void onClick(View v){
                 AppManagerUtil.showInstalledAppDetails("com.lm.powersecurity");
+            }
+        });
+
+        mView.findViewById(R.id.tv_call_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent intent=new Intent("android.intent.action.CALL", Uri.parse("tel:" + "13320605490"));
+                mContext.startActivity(intent);
+            }
+        });
+
+        mView.findViewById(R.id.tv_request_permission).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                mContext.startActivity(new Intent(mContext, PermissionTestActivity.class));
             }
         });
 
@@ -225,6 +255,14 @@ public class Page1 extends Page {
                 mContext.startActivity(intent);
             }
         });
+
+        mView.findViewById(R.id.tv_foreground_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //AlarmTestManager.setAlarm();
+                mContext.startService(new Intent(mContext, ForegroundService.class));
+            }
+        });
     }
 
     public void onEventMainThread(OnListenerCreated event){
@@ -251,6 +289,7 @@ public class Page1 extends Page {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext)
                 .setSmallIcon(R.drawable.ic_checkbox_off)
                 .setAutoCancel(true)
+                .setOngoing(true)
                 .setContent(remoteViews)
                 .setContentIntent(pendingIntent);
 

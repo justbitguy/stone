@@ -31,6 +31,18 @@
                 custom:text="@string/start_power_security_detail" />
 
             <com.just.stone.view.ItemView
+                android:id="@+id/tv_call_test"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_call_test" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_request_permission"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_request_permission" />
+
+            <com.just.stone.view.ItemView
                 android:id="@+id/tv_anim_button"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -95,6 +107,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 custom:text="@string/text_pick_image" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_foreground_test"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_foreground_test" />
         </LinearLayout>
 
     </ScrollView>

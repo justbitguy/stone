@@ -19,10 +19,10 @@ public class Msg {
         Async.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextView tv = (TextView)container.findViewById(R.id.tv_message);
-                if (tv != null){
-                    tv.append(msg + "\n");
-                }
+//                TextView tv = (TextView)container.findViewById(R.id.tv_message);
+//                if (tv != null){
+//                    tv.append(msg + "\n");
+//                }
             }
         });
     }

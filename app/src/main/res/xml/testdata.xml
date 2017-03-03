@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestData xmlns:android="http://schemas.android.com/apk/res/android">
+    <summary>summary text</summary>
+    <actions>
+        <action>action-1</action>
+        <action>action-2</action>
+        <action>action-3</action>
+    </actions>
+    <detail>detail text</detail>
+</TestData>

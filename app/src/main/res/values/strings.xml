@@ -27,6 +27,10 @@
     <string name="text_download_image">Download Image</string>
     <string name="text_pick_image">Pick Image</string>
     <string name="text_start_test">Start Test</string>
+    <string name="text_alarm_test">Alarm Test</string>
+    <string name="text_foreground_test">Foreground Test</string>
+    <string name="text_call_test">Call Test</string>
+    <string name="text_request_permission">Request Permissions</string>
 
     <string name="admin_receiver_status">Receiver Status: %s</string>
     <string name="admin_receiver_status_enabled">Admin Receiver Enabled</string>
@@ -43,4 +47,6 @@
     <string name="boost_do_boost">Boost</string>
 
     <string name="system_activity_404_tips">Sorry, we can\'t find right setting options in your device, we will try to fix it.</string>
+    <string name="quit">Quit</string>
+    <string name="settings">Settings</string>
 </resources>

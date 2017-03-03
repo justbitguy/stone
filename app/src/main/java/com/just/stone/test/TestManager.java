@@ -8,5 +8,6 @@ public class TestManager {
     public static void startTest() {
         RegexTest.startTest();
         XmlParseTest.startTest();
+        CodeTest.startTest();
     }
 }
