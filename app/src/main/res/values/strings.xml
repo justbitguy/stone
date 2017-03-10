@@ -13,6 +13,8 @@
     <string name="sample_device_admin">sample device</string>
     <string name="sample_device_admin_description">sample device admin description</string>
     <string name="device_admin_button">Device Admin</string>
+    <string name="start_fragment_test">Fragment Test</string>
+    <string name="text_running_app">Running Apps</string>
     <string name="start_anim_activity">Animation Test</string>
     <string name="start_test_activity">Activity Test</string>
     <string name="start_custom_view">Custom View Activity</string>
@@ -31,6 +33,8 @@
     <string name="text_foreground_test">Foreground Test</string>
     <string name="text_call_test">Call Test</string>
     <string name="text_request_permission">Request Permissions</string>
+    <string name="text_install_test">Install Test</string>
+    <string name="text_activity_task">Activity Task</string>
 
     <string name="admin_receiver_status">Receiver Status: %s</string>
     <string name="admin_receiver_status_enabled">Admin Receiver Enabled</string>

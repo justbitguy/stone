@@ -9,5 +9,6 @@ public class TestManager {
         RegexTest.startTest();
         XmlParseTest.startTest();
         CodeTest.startTest();
+        ApiVersionTest.startTest();;
     }
 }

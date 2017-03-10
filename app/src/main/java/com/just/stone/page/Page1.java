@@ -25,17 +25,20 @@ import com.just.stone.Manifest;
 import com.just.stone.R;
 import com.just.stone.activity.AnimationActivity;
 import com.just.stone.activity.CustomViewActivity;
+import com.just.stone.activity.FragmentActivity;
 import com.just.stone.activity.ImageShowActivity;
 import com.just.stone.activity.NotifyActivity;
 import com.just.stone.activity.PermissionTestActivity;
 import com.just.stone.activity.ScrollActivity;
 import com.just.stone.activity.TestActivity;
+import com.just.stone.activity.task.ActivityA;
 import com.just.stone.async.Async;
 import com.just.stone.broadcast.DeviceAdminSampleReceiver;
 import com.just.stone.manager.AlarmTestManager;
 import com.just.stone.manager.CustomProvider;
 import com.just.stone.manager.ImageDownload;
 import com.just.stone.manager.InstalledPackageManager;
+import com.just.stone.manager.RunningAppManager;
 import com.just.stone.manager.UploadManager;
 import com.just.stone.model.eventbus.OnListenerCreated;
 import com.just.stone.service.ForegroundService;
@@ -112,10 +115,43 @@ public class Page1 extends Page {
             }
         });
 
+        mView.findViewById(R.id.tv_fragment_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                // TODO: 2017/3/7
+                mContext.startActivity(new Intent(mContext, FragmentActivity.class));
+            }
+        });
+
+        mView.findViewById(R.id.tv_running_app).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                RunningAppManager.getInstance().getRunningApps(mContext);
+            }
+        });
+
         mView.findViewById(R.id.tv_request_permission).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 mContext.startActivity(new Intent(mContext, PermissionTestActivity.class));
+            }
+        });
+
+        mView.findViewById(R.id.tv_install_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent in = new Intent();
+                in.setAction("android.intent.action.VIEW");
+                in.addCategory(Intent.CATEGORY_DEFAULT);
+                in.setDataAndType(Uri.parse("file:///sdcard/virus.apk"),"application/vnd.android.package-archive");
+                mContext.startActivity(in);
+            }
+        });
+
+        mView.findViewById(R.id.tv_activity_task).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                mContext.startActivity(new Intent(mContext, ActivityA.class));
             }
         });
 

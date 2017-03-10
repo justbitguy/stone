@@ -38,6 +38,26 @@
         <activity android:name=".activity.ScrollActivity"/>
         <activity android:name=".activity.NotifyActivity"/>
         <activity android:name=".activity.PermissionTestActivity"/>
+        <activity android:name=".activity.FragmentActivity"/>
+
+        <!--task test start-->
+        <activity android:name=".activity.task.ActivityA"
+            android:launchMode="standard"
+            android:taskAffinity="com.just.stone.task0"/>
+
+        <activity android:name=".activity.task.ActivityB"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".activity.task.ActivityB_1"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.just.stone.task_1"/>
+
+        <activity android:name=".activity.task.ActivityC"
+            android:launchMode="singleTop"/>
+
+        <activity android:name=".activity.task.ActivityD"
+            android:launchMode="singleInstance"/>
+        <!--task test end-->
 
         <service android:name=".service.StoneAccessibilityService"
             android:label="@string/accessibility_service_label"

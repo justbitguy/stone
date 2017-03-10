@@ -43,6 +43,30 @@
                 custom:text="@string/text_request_permission" />
 
             <com.just.stone.view.ItemView
+                android:id="@+id/tv_install_test"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_install_test" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_activity_task"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_activity_task" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_fragment_button"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/start_fragment_test" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_running_app"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_running_app" />
+
+            <com.just.stone.view.ItemView
                 android:id="@+id/tv_anim_button"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
