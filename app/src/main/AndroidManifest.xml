@@ -42,15 +42,18 @@
 
         <!--task test start-->
         <activity android:name=".activity.task.ActivityA"
+            android:launchMode="standard" />
+
+        <activity android:name=".activity.task.ActivityA_1"
             android:launchMode="standard"
-            android:taskAffinity="com.just.stone.task0"/>
+            android:taskAffinity="com.just.stone.task.A"/>
 
         <activity android:name=".activity.task.ActivityB"
             android:launchMode="singleTask"/>
 
         <activity android:name=".activity.task.ActivityB_1"
             android:launchMode="singleTask"
-            android:taskAffinity="com.just.stone.task_1"/>
+            android:taskAffinity="com.just.stone.task.B"/>
 
         <activity android:name=".activity.task.ActivityC"
             android:launchMode="singleTop"/>

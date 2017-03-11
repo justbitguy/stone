@@ -17,6 +17,17 @@
         android:text="Activity-A standard"/>
 
     <TextView
+        android:id="@+id/start_a_1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@color/color_0A65C8EF"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:text="Activity-A_1 standard | Affinity A"/>
+
+    <TextView
         android:id="@+id/start_b"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -36,7 +47,7 @@
         android:background="@color/color_0A65C8EF"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
-        android:text="Activity-B_1 singleTask | Affinity New"/>
+        android:text="Activity-B_1 singleTask | Affinity B"/>
 
     <TextView
         android:id="@+id/start_c"
