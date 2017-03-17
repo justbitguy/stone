@@ -13,12 +13,6 @@
             android:orientation="vertical">
 
             <com.just.stone.view.ItemView
-                android:id="@+id/tv_device_admin_button"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                custom:text="@string/device_admin_button" />
-
-            <com.just.stone.view.ItemView
                 android:id="@+id/tv_send_notify"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -29,6 +23,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 custom:text="@string/start_power_security_detail" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_activity_task"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_activity_task" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_new_intent"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_on_new_intent" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_file_manage"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_file_manage" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_download_test"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_download_test" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_install_test"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_install_test" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_fragment_button"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/start_fragment_test" />
 
             <com.just.stone.view.ItemView
                 android:id="@+id/tv_call_test"
@@ -43,22 +73,10 @@
                 custom:text="@string/text_request_permission" />
 
             <com.just.stone.view.ItemView
-                android:id="@+id/tv_install_test"
+                android:id="@+id/tv_device_admin_button"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                custom:text="@string/text_install_test" />
-
-            <com.just.stone.view.ItemView
-                android:id="@+id/tv_activity_task"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                custom:text="@string/text_activity_task" />
-
-            <com.just.stone.view.ItemView
-                android:id="@+id/tv_fragment_button"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                custom:text="@string/start_fragment_test" />
+                custom:text="@string/device_admin_button" />
 
             <com.just.stone.view.ItemView
                 android:id="@+id/tv_running_app"

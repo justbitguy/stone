@@ -23,8 +23,11 @@ import android.widget.RemoteViews;
 import com.just.stone.ApplicationEx;
 import com.just.stone.Manifest;
 import com.just.stone.R;
+import com.just.stone.activity.ActivityNewIntentTest;
 import com.just.stone.activity.AnimationActivity;
 import com.just.stone.activity.CustomViewActivity;
+import com.just.stone.activity.DownloadActivity;
+import com.just.stone.activity.FileManageActivity;
 import com.just.stone.activity.FragmentActivity;
 import com.just.stone.activity.ImageShowActivity;
 import com.just.stone.activity.NotifyActivity;
@@ -104,6 +107,27 @@ public class Page1 extends Page {
             @Override
             public void onClick(View v){
                 AppManagerUtil.showInstalledAppDetails("com.lm.powersecurity");
+            }
+        });
+
+        mView.findViewById(R.id.tv_download_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                mContext.startActivity(new Intent(mContext, DownloadActivity.class));
+            }
+        });
+
+        mView.findViewById(R.id.tv_new_intent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                mContext.startActivity(new Intent(mContext, ActivityNewIntentTest.class));
+            }
+        });
+
+        mView.findViewById(R.id.tv_file_manage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                mContext.startActivity(new Intent(mContext, FileManageActivity.class));
             }
         });
 

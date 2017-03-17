@@ -35,6 +35,9 @@
     <string name="text_request_permission">Request Permissions</string>
     <string name="text_install_test">Install Test</string>
     <string name="text_activity_task">Activity Task</string>
+    <string name="text_download_test">Download Test</string>
+    <string name="text_file_manage">File Manage</string>
+    <string name="text_on_new_intent">onNewIntent Test</string>
 
     <string name="admin_receiver_status">Receiver Status: %s</string>
     <string name="admin_receiver_status_enabled">Admin Receiver Enabled</string>
