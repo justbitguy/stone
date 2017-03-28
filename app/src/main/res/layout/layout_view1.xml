@@ -31,6 +31,18 @@
                 custom:text="@string/text_activity_task" />
 
             <com.just.stone.view.ItemView
+                android:id="@+id/tv_video_play"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_video_play" />
+
+            <com.just.stone.view.ItemView
+                android:id="@+id/tv_file_observer"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                custom:text="@string/text_file_observer" />
+
+            <com.just.stone.view.ItemView
                 android:id="@+id/tv_new_intent"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"

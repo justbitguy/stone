@@ -11,7 +11,7 @@ import com.just.stone.R;
  * Created by zhangjinwei on 2017/3/15.
  */
 
-public class ActivityNewIntentTest extends Activity{
+public class NewIntentTestActivity extends Activity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

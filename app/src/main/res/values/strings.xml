@@ -38,6 +38,8 @@
     <string name="text_download_test">Download Test</string>
     <string name="text_file_manage">File Manage</string>
     <string name="text_on_new_intent">onNewIntent Test</string>
+    <string name="text_file_observer">File Observer</string>
+    <string name="text_video_play">Video Play</string>
 
     <string name="admin_receiver_status">Receiver Status: %s</string>
     <string name="admin_receiver_status_enabled">Admin Receiver Enabled</string>
@@ -56,4 +58,7 @@
     <string name="system_activity_404_tips">Sorry, we can\'t find right setting options in your device, we will try to fix it.</string>
     <string name="quit">Quit</string>
     <string name="settings">Settings</string>
+
+    <string name="file_observer_start_watching">start watching</string>
+    <string name="file_observer_stop_watching">stop watching</string>
 </resources>

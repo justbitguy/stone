@@ -77,9 +77,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.ActivityNewIntentTest"
+        <activity android:name=".activity.NewIntentTestActivity"
             android:launchMode="singleTask"
             android:taskAffinity="com.just.stone.task.newtest"/>
+
+        <activity android:name=".activity.FileObserveActivity"
+            android:launchMode="singleTask" />
+
+        <activity android:name=".activity.VideoPlayActivity"
+            android:launchMode="singleTask" />
 
         <service android:name=".service.StoneAccessibilityService"
             android:label="@string/accessibility_service_label"

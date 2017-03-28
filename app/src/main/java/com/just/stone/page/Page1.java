@@ -13,17 +13,15 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.just.stone.ApplicationEx;
-import com.just.stone.Manifest;
 import com.just.stone.R;
-import com.just.stone.activity.ActivityNewIntentTest;
+import com.just.stone.activity.FileObserveActivity;
+import com.just.stone.activity.NewIntentTestActivity;
 import com.just.stone.activity.AnimationActivity;
 import com.just.stone.activity.CustomViewActivity;
 import com.just.stone.activity.DownloadActivity;
@@ -34,10 +32,10 @@ import com.just.stone.activity.NotifyActivity;
 import com.just.stone.activity.PermissionTestActivity;
 import com.just.stone.activity.ScrollActivity;
 import com.just.stone.activity.TestActivity;
+import com.just.stone.activity.VideoPlayActivity;
 import com.just.stone.activity.task.ActivityA;
 import com.just.stone.async.Async;
 import com.just.stone.broadcast.DeviceAdminSampleReceiver;
-import com.just.stone.manager.AlarmTestManager;
 import com.just.stone.manager.CustomProvider;
 import com.just.stone.manager.ImageDownload;
 import com.just.stone.manager.InstalledPackageManager;
@@ -117,10 +115,24 @@ public class Page1 extends Page {
             }
         });
 
+        mView.findViewById(R.id.tv_video_play).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                mContext.startActivity(new Intent(mContext, VideoPlayActivity.class));
+            }
+        });
+
+        mView.findViewById(R.id.tv_file_observer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                mContext.startActivity(new Intent(mContext, FileObserveActivity.class));
+            }
+        });
+
         mView.findViewById(R.id.tv_new_intent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                mContext.startActivity(new Intent(mContext, ActivityNewIntentTest.class));
+                mContext.startActivity(new Intent(mContext, NewIntentTestActivity.class));
             }
         });
 
@@ -349,7 +361,7 @@ public class Page1 extends Page {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext)
                 .setSmallIcon(R.drawable.ic_checkbox_off)
                 .setAutoCancel(true)
-                .setOngoing(true)
+                .setOngoing(false)
                 .setContent(remoteViews)
                 .setContentIntent(pendingIntent);
 
