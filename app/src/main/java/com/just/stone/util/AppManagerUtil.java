@@ -181,4 +181,11 @@ public class AppManagerUtil {
             Toast.makeText(ApplicationEx.getInstance(), ApplicationEx.getInstance().getString(R.string.system_activity_404_tips), Toast.LENGTH_SHORT).show();
         }
     }
+
+    public static void launchApp(Context context, String pkgName) {
+        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(pkgName);
+        if (launchIntent != null) {
+            context.startActivity(launchIntent);
+        }
+    }
 }

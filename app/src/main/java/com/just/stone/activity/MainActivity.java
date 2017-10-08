@@ -63,6 +63,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     protected void onResume(){
         super.onResume();
         mPage2.onResume();
+        mPage3.onResume();
     }
 
     @Override

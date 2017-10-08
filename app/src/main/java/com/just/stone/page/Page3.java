@@ -12,22 +12,30 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.just.stone.R;
 import com.just.stone.activity.ImageShowActivity;
 import com.just.stone.async.Async;
+import com.just.stone.constant.WhiteListConstant;
 import com.just.stone.manager.ImageDownload;
+import com.just.stone.manager.InstalledPackageManager;
 import com.just.stone.manager.UploadManager;
+import com.just.stone.model.pojo.BaseAppInfo;
 import com.just.stone.model.pojo.MyParcelable;
+import com.just.stone.model.pojo.BaseAppInfo;
 import com.just.stone.test.TestManager;
+import com.just.stone.util.AppManagerUtil;
 import com.just.stone.util.LogUtil;
 import com.just.stone.util.Msg;
+import com.just.stone.view.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Zac on 2016/8/16.
@@ -39,6 +47,10 @@ public class Page3 extends Page{
         super(context, mViewId);
     }
 
+    ListView mListView;
+    List<BaseAppInfo> mBaseAppList = new ArrayList<>();
+    ViewAdapter mAdapter;
+
     @Override
     protected  void init(){
         super.init();
@@ -46,66 +58,104 @@ public class Page3 extends Page{
     @Override
     protected void initData(){
         super.initData();
+        mBaseAppList = new ArrayList<>();
+        updateAppList();
     }
 
     @Override
     protected void initView(){
         super.initView();
-//        mView.findViewById(R.id.tv_upload).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                LogUtil.d("upload", "start upload!");
-//                Msg.show(mView, "start upload!");
-//                Async.run(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try{
-//                            UploadManager.upLoadByCommonPost();
-//                        } catch (Exception e){
-//                            LogUtil.error(e);
-//                        }
-//                    }
-//                });
-//            }
-//        });
-//
-//        mView.findViewById(R.id.tv_download).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Async.run(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        ImageDownload.download();
-//                    }
-//                });
-//            }
-//        });
-//
-//        mView.findViewById(R.id.tv_pick).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(mContext, ImageShowActivity.class);
-//                mContext.startActivity(intent);
-//            }
-//        });
-
-        mView.findViewById(R.id.tv_test).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TestManager.startTest();
-            }
-        });
+        mListView = (ListView)mView.findViewById(R.id.list_app_view);
+        mAdapter = new ViewAdapter();
+        mListView.setAdapter(mAdapter);
     }
-
 
     @Override
     public void onResume(){
         super.onResume();
+        updateAppList();
     }
 
     @Override
     public void onPageSelected(){
-        // TODO: 2016/8/16
+        mAdapter.notifyDataSetChanged();
     }
 
+    private void updateAppList(){
+        Set<String> installedApps = InstalledPackageManager.getInstance().getPkgNameOfInstalledApp();
+        for (String pkgName : installedApps){
+            if (pkgName.equals(mContext.getPackageName()) || AppManagerUtil.isSystemApp(pkgName) ){
+                continue;
+            }
+            addToAppList(pkgName);
+        }
+    }
+
+    private void addToAppList(String packageName){
+        synchronized (mBaseAppList){
+            boolean found = false;
+            for (BaseAppInfo info : mBaseAppList){
+                if (info.packageName.equals(packageName)){
+                    found = true;
+                    break;
+                }
+            }
+            if (!found){
+                BaseAppInfo newInfo = new BaseAppInfo();
+                newInfo.packageName = packageName;
+                newInfo.name = AppManagerUtil.getNameByPackage(packageName);
+                mBaseAppList.add(newInfo);
+            }
+        }
+    }
+
+    private class ViewAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount(){
+            return mBaseAppList.size();
+        }
+
+        @Override
+        public Object getItem(int position){
+            return mBaseAppList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position){
+            return position;
+        }
+
+        @Override
+        public View getView (int position, View contentView, ViewGroup parent){
+            if (contentView == null){
+                contentView = mContext.getLayoutInflater().inflate(R.layout.layout_app_info_item, null);
+                ViewHolder.<TextView>get(contentView, R.id.tv_action).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO: 2017/10/8
+                        BaseAppInfo item = (BaseAppInfo)getItem((int)v.getTag());
+                        AppManagerUtil.launchApp(mContext, item.packageName);
+
+                    }
+                });
+                // set onclicklistener
+                ViewHolder.<LinearLayout>get(contentView, R.id.linear_layout_app_item).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BaseAppInfo item = (BaseAppInfo)getItem((int)v.getTag());
+                        AppManagerUtil.showInstalledAppDetails(item.packageName);
+                    }
+                });
+            }
+
+            final BaseAppInfo itemData = (BaseAppInfo) getItem(position);
+            ViewHolder.<ImageView>get(contentView, R.id.app_item_icon).setImageDrawable(AppManagerUtil.getPackageIcon(itemData.packageName));
+            ViewHolder.<TextView>get(contentView, R.id.app_item_name).setText(itemData.name);
+            ViewHolder.<TextView>get(contentView, R.id.app_package_name).setText(itemData.packageName);
+            ViewHolder.<TextView>get(contentView, R.id.tv_action).setTag(position);
+            ViewHolder.<LinearLayout>get(contentView, R.id.linear_layout_app_item).setTag(position);
+            return contentView;
+        }
+    }
 }

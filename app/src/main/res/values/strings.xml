@@ -61,4 +61,6 @@
 
     <string name="file_observer_start_watching">start watching</string>
     <string name="file_observer_stop_watching">stop watching</string>
+
+    <string name="text_launch">Launch</string>
 </resources>
